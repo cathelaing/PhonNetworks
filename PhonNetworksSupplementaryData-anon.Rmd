@@ -1,0 +1,190 @@
+---
+title: "Supplementary data - Phonological Networks"
+author: "anonymised for review"
+date: "30/03/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+
+source("prelims.R")
+
+r_refs(file="r-references.bib")
+
+my_citations <- cite_r(
+  file="r-references.bib"
+  , pkgs=c("tidyverse", "igraph", "papaja", "lmerTest")
+  , withhold=FALSE
+  , footnote=TRUE
+)
+
+# load files
+
+globalthresholds_AOP <- feather::read_feather("Data/globalthresholds_AOP.feather")
+full_thresholds <- feather::read_feather("Data/full_thresholds.feather")
+
+regression_data_lyon <- feather::read_feather("Data/regression_data_lyon.feather")
+regression_data_providence <- feather::read_feather("Data/regression_data_providence.feather")
+regression_data <- rbind(regression_data_lyon, regression_data_providence)
+
+comparison_data_P <- read_csv("Data/comparison_data_providence.csv")                                                            
+comparison_data_L <- read_csv("Data/comparison_data_lyon.csv")
+comparison_data <- rbind(comparison_data_P, comparison_data_L)
+
+source("PhonologicalNetworks-Figures.R")
+source("PhonologicalNetworks-Tables.R")
+
+stat_sum_df <- function(fun, geom="crossbar", ...) {
+  stat_summary(fun.data=fun, colour="red", geom=geom, width=0.2, ...)
+}
+
+```
+
+### S1: Age of production (AoP) ~ connectivity
+
+``` {r table-aop-deg-corr, comment=F, message=F, warning = F, echo = F, results = "asis"}
+cap = "S1: Outputs (rho and p values) of AoP ~ degree Spearman's correlation tests for each infant in the dataset."
+
+kable(table.aop.deg.corr.speaker, "latex", booktabs=T, longtable=T, 
+      caption=cap, digits=2, align="c")
+```
+
+```{r Figure-AOP-deg-corr, echo=FALSE, fig.cap=cap, fig.pos='H', message=FALSE, warning=FALSE}
+cor_deg_AOP.fig
+cap <- sprintf("S1: Age of production in relation to degree (z-score) of each word in the data. Individual points show individual word types produced in each month, with regression lines showing correlations for each infant. Data type (Actual vs. Target) is indexed by colour; shaded boxes show French data, un-shaded show English data.")
+```
+\newpage
+
+### S2: Network growth models: Full model outputs
+
+```{r regression model actual, message=FALSE, warning=FALSE, include=FALSE}
+
+reg_dat <- regression_data[which(complete.cases(regression_data[,c('PAQ_scaled_target', 'PAT_scaled', 'length_scaled', 'freq_scaled', 'age_scaled', 'corpus')])),]
+
+model3_A <- glmer(learned_next ~
+                    length_scaled*age_scaled +
+                    tokens_scaled*age_scaled +
+                      freq_scaled*age_scaled +
+                    corpus +
+                    category +
+                    PAQ_scaled_target*age_scaled +
+                      PAT_scaled*age_scaled +
+                    (1+age_scaled|Speaker),
+                    family=binomial("logit"),
+                    control=glmerControl(calc.derivs=FALSE,
+                                         optimizer="bobyqa",
+                                         optCtrl=list(maxfun=2e5)),
+                    data=subset(reg_dat, data_type == "actual"))
+
+
+model.summary_A <- summary(model3_A)
+
+model3_T <- glmer(learned_next ~
+                  length_scaled*age_scaled +
+                  tokens_scaled*age_scaled +
+                  freq_scaled*age_scaled +
+                  corpus +
+                  category +
+                  PAQ_scaled_target*age_scaled +
+                  PAT_scaled*age_scaled +
+                  (1+age_scaled|Speaker),
+                    family=binomial("logit"),
+                    control=glmerControl(calc.derivs=FALSE,
+                                         optimizer="bobyqa",
+                                         optCtrl=list(maxfun=2e5)),
+                    data=subset(reg_dat, data_type == "target"))
+
+model.summary_T <- summary(model3_T)
+
+model3_A_tab <- model.summary_A$coefficients %>%
+  as.data.frame %>%
+  rename(
+    "b"="Estimate"
+     , "SE"="Std. Error"
+     , "z"="z value"
+     , "p"="Pr(>|z|)") %>%
+  mutate(
+    Effect=papaja:::beautify_terms(rownames(.))
+  )
+
+table.model3_A <- model3_A_tab %>%
+  printnum(
+    digits=c(2, 2, 2, 3)
+    , gt1=c(TRUE, TRUE, TRUE, TRUE)
+    , zero=c(TRUE, TRUE, TRUE, TRUE)
+  ) %>%
+  select(Effect, `b`, `SE`, `z`, `p`) %>%
+  rename("beta"=`b`) %>%
+  mutate(beta=as.numeric(beta),
+        SE=as.numeric(SE),
+        `z`=as.numeric(`z`),
+        `p`=as.numeric(`p`),
+             p=scales::pvalue(p))
+
+model3_T_tab <- model.summary_T$coefficients %>%
+  as.data.frame %>%
+  rename(
+    "b"="Estimate"
+     , "SE"="Std. Error"
+     , "z"="z value"
+     , "p"="Pr(>|z|)") %>%
+  mutate(
+    Effect=papaja:::beautify_terms(rownames(.))
+  )
+
+table.model3_T <- model3_T_tab %>%
+  printnum(
+    digits=c(2, 2, 2, 3)
+    , gt1=c(TRUE, TRUE, TRUE, TRUE)
+    , zero=c(TRUE, TRUE, TRUE, TRUE)
+  ) %>%
+  select(Effect, `b`, `SE`, `z`, `p`) %>%
+  rename("beta"=`b`) %>%
+  mutate(beta=as.numeric(beta),
+        SE=as.numeric(SE),
+        `z`=as.numeric(`z`),
+        `p`=as.numeric(`p`),
+             p=scales::pvalue(p))
+
+rownames(table.model3_T) <- NULL
+
+table.model.3 <- cbind(table.model3_A, table.model3_T)
+table.model.summary <- table.model.3[,-6]
+
+table.model.summary.full <- table.model.summary %>% mutate(Effect=fct_recode(Effect,
+                                               Age="Age scaled",
+                                               Length="Length scaled",
+                                               `n Tokens` = "Tokens scaled",
+                                              `Word frequency`="Freq scaled",
+                                              `Corpus` = "CorpusEnglish",
+                                              `PAQ value`="PAQ scaled target",
+                                              `PAT value`="PAT scaled",
+                                              `Category: object words` = "Categoryobject word",
+                                              `Category: connecting words` = "Categoryconnecting words",
+                                              `Category: adjectives` = "Categorydescriptive words",
+                                              `Category: games/routines` = "Categorygames routines",
+                                              `Category: prepositions` = "Categoryprepositions",
+                                              `Category: pronouns` = "Categorypronouns",
+                                              `Category: quantifiers` = "Categoryquantifiers",
+                                              `Category: question words` = "Categoryquestion words",
+                                              `Category: onomatopoeia`= "Categorysounds",
+                                              `Category: time` = "Categorytime words",
+                                              `Category: locations` = "Categorylocations",
+                                              `Age x Length`="Length scaled $\\times$ Age scaled",
+                                              `Age x n Tokens` = "Age scaled $\\times$ Tokens scaled",
+                                              `Age x Frequency`="Age scaled $\\times$ Freq scaled",
+                                              `Age x PAQ`="Age scaled $\\times$ PAQ scaled target",
+                                              `Age x PAT`="Age scaled $\\times$ PAT scaled"))
+
+rownames(table.model.summary.full) <- NULL
+
+```
+
+```{r full-data-summary, echo=F, message=FALSE, warning=FALSE, comment=F}
+cap="Full results from maximal logistic regression model (model 3) testing the effects of network growth values, corpus (English as baseline), word frequency and word length to predict word acquisition. All variables were scaled and centred. Word category was defined according to word categories on the McArthur Bates CDI (Fenson et al., 1994)"
+knitr::kable(table.model.summary.full, "latex", booktabs=T, longtable=T, caption=cap, digits=2, align="c",
+          col.names=gsub("[.1]", "", names(table.model.summary))) %>%
+  add_header_above(c(" "=1, "Actual"=4, "Target"=4))
+```
+
+
