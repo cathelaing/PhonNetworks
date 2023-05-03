@@ -42,8 +42,10 @@ stat_sum_df <- function(fun, geom="crossbar", ...) {
 
 ### S1: Age of production (AoP) ~ connectivity
 
+
+
 ``` {r table-aop-deg-corr, comment=F, message=F, warning = F, echo = F, results = "asis"}
-cap = "S1: Outputs (rho and p values) of AoP ~ degree Spearman's correlation tests for each infant in the dataset."
+cap = "Outputs (rho and p values) of AoP ~ degree Spearman's correlation tests for each infant in the dataset."
 
 kable(table.aop.deg.corr.speaker, "latex", booktabs=T, longtable=T, 
       caption=cap, digits=2, align="c")
@@ -51,10 +53,16 @@ kable(table.aop.deg.corr.speaker, "latex", booktabs=T, longtable=T,
 
 
 
-```{r Figure-AOP-deg-corr, echo=FALSE, fig.cap=cap, fig.pos='H', message=FALSE, warning=FALSE}
-cor_deg_AOP.fig
-cap <- sprintf("S1: Age of production in relation to degree (z-score) of each word in the data. Individual points show individual word types produced in each month, with regression lines showing correlations for each infant. Data type (Actual vs. Target) is indexed by colour; shaded boxes show French data, un-shaded show English data.")
+```{r Figure-AOP-deg-corr, echo=FALSE, fig.pos='H', message=FALSE, warning=FALSE}
+
+
+plot(cor_deg_AOP.fig)
+
+
+# cap <- sprintf("S1: Age of production in relation to degree (z-score) of each word in the data. Individual points show individual word types produced in each month, with regression lines showing correlations for each infant. Data type (Actual vs. Target) is indexed by colour; shaded boxes show French data, un-shaded show English data.")
 ```
+
+
 \newpage
 
 ### S2: Network growth models: Full model outputs

@@ -10,13 +10,14 @@ cor_deg_AOP.fig <- ggplot(globalthresholds_AOP,
   # scale_y_discrete(breaks=NULL) +
   geom_smooth(method=lm,
               se=FALSE, size = 2) +
-  #ggtitle("AOP ~ degree, E=.25") +
+  ggtitle("Figure S1: Age of production in relation to degree (z-score) of each word in the data. Individual points show individual \nword types produced in each month, with regression lines showing correlations for each infant. \nData type (Actual vs. Target) is indexed by colour; shaded boxes show French data, un-shaded show English data.") +
   ylab("degree (z-score)") +
   theme_bw() +
   theme(axis.text=element_text(size=12),
         legend.title = element_blank(),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
+        plot.title = element_text(size = 8),
         #legend.position = "top",
         strip.text = element_text(size=9),
         strip.background = element_rect(colour="black",size=1),
