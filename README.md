@@ -1,6 +1,6 @@
 # PhonologicalNetworks - Updated 29th March 2023
 
-Data and code for the project 'Phonological Networks and Systematicity in Early Lexical Acquisition' (Laing, in prep).
+Data and code for the project 'Phonological Networks and Systematicity in Early Lexical Acquisition'
 
 This analysis draws on two corpora:
 
@@ -28,8 +28,11 @@ The variables in this dataset are as follows:
 - *AOP*: Age at which each word in the network was first produced.
 - *degree_z*: Z score of *degree*.
 
+2. **full_thresholds**:
 
-2. **regression_data**: again, this binds together two sets of data, one for each corpus.
+This dataset is the same as the above, but with the threshold set to .99, to account for the full possible number of words that could be included in the dataset.
+
+3. **regression_data**: again, this binds together two sets of data, one for each corpus.
 
 This dataset includes the PAT and PAQ growth values for use in the logistic regression models. The variables are as follows:
 
@@ -52,6 +55,10 @@ This dataset includes the PAT and PAQ growth values for use in the logistic regr
 - *vocab_scaled*: *vocab_agg* value scaled and centred.
 - *age_scaled*: *age* value scaled and centred.
 - *category*: word category as defined by the CDI
+
+4. **comparison_data**: again, this binds together two sets of data, one for each corpus.
+
+This dataset includes the Gloss and Target/Actual IPA transcriptions of all words in the dataset, as well as age of production, number of syllables (Target/Actual), number of phonemes (Target/Actual), and phonological distance between Target and Actual forms (not used in this analysis).
 
 In addition, the following variables occur across datasets:
 

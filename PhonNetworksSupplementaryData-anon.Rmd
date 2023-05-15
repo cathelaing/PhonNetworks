@@ -1,7 +1,6 @@
 ---
 title: "Supplementary data - Phonological Networks and Systematicity in Early Lexical Acquisition"
 author: "anonymised for review"
-#date: "30/03/2022"
 output: pdf_document
 ---
 
@@ -45,7 +44,7 @@ stat_sum_df <- function(fun, geom="crossbar", ...) {
 
 
 ``` {r table-aop-deg-corr, comment=F, message=F, warning = F, echo = F, results = "asis"}
-cap = "Outputs (rho and p values) of AoP ~ degree Spearman's correlation tests for each infant in the dataset."
+cap = "Outputs (rho and p values) of AoP-degree Spearman's correlation tests for each infant in the dataset."
 
 kable(table.aop.deg.corr.speaker, "latex", booktabs=T, longtable=T, 
       caption=cap, digits=2, align="c")
@@ -191,7 +190,7 @@ rownames(table.model.summary.full) <- NULL
 ```
 
 ```{r full-data-summary, echo=F, message=FALSE, warning=FALSE, comment=F}
-cap="Full results from maximal logistic regression model (model 3) testing the effects of network growth values, corpus (English as baseline), word frequency and word length to predict word acquisition. All variables were scaled and centred. Word category was defined according to word categories on the McArthur Bates CDI (Fenson et al., 1994)"
+cap="Results from maximal logistic regression model (model 3) testing the effects of network growth values, corpus (English as baseline), word frequency, vocabulary size, word category, n tokens and word length to predict word acquisition. All variables were scaled and centred. Word category was defined according to word categories on the McArthur Bates CDI (Fenson et al., 1994)"
 knitr::kable(table.model.summary.full, "latex", booktabs=T, longtable=T, caption=cap, digits=2, align="c",
           col.names=gsub("[.1]", "", names(table.model.summary))) %>%
   add_header_above(c(" "=1, "Actual"=4, "Target"=4))

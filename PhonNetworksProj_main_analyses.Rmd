@@ -19,11 +19,9 @@ my_citations <- cite_r(
 # load files
 
 globalthresholds_AOP_lyon <- feather::read_feather("Data/globalthresholds_AOP_lyon.feather") %>% 
-  filter(threshold == 0.25) %>% 
-  mutate(corpus = "French")  ## added to prep data, re-run and then remove in final script (don't remove threshold filter)
+  filter(threshold == 0.25) 
 globalthresholds_AOP_providence <- feather::read_feather("Data/globalthresholds_AOP_providence.feather") %>% 
-  filter(threshold == 0.25) %>% 
-  mutate(corpus = "English")  ## added to prep data, re-run and then remove in final script (don't remove threshold filter)
+  filter(threshold == 0.25)
 globalthresholds_AOP <- rbind(globalthresholds_AOP_lyon, globalthresholds_AOP_providence)
 
 full_lyon <- feather::read_feather("Data/globalthresholds_AOP_lyon.feather") %>% 
@@ -85,8 +83,8 @@ syl.4 <- subset(nsyls, nsyl_target == 4)$French
 ```
 
 ```{r table-data-overview, echo=F, message=FALSE, warning=FALSE, comment=F}
-cap="Age (months) at first session, number of sessions and number of distinct word types produced by each child in the dataset - an index of each child's global network size. Means and SDs are shown in bold."
-#apa_table(table.data.overview, caption=cap, col_spanners=NULL, digits=0, placement="H", font_size="small")
+cap="Age (months) at first session, number of sessions and number of distinct word types produced by each child in the dataset. Means and SDs for each corpus are shown in bold."
+
 kable(table.data.overview, "latex", booktabs=T, longtable=T, 
       caption=cap, digits=0, align="c")  %>%  # might need to turn digits back to 0
   kable_styling()%>%
@@ -403,7 +401,7 @@ target_p_PAQ <- subset(model3_T_tab, Effect == "PAQ scaled target")$p
 ```
 
 ```{r table-model-outputs, echo=FALSE, message=FALSE, warning=FALSE}
-cap="Outputs from likelihood ratio tests comparing logistic regression models predicting acquisition of words in each month according to PAT- and PAQ-like growth structures."
+cap="Outputs from nested model comparisons comparing logistic regression models predicting acquisition of words in each month according to PAT- and PAQ-like growth structures."
 kable(table.model.outputs, "latex", booktabs=T, longtable=T, caption=cap, digits=2, align="c",
       col.names=c("Model", "Df", "Chi Sq", "p", "Df", "Chi Sq", "p")) %>%
     kable_styling()%>%
@@ -412,7 +410,7 @@ kable(table.model.outputs, "latex", booktabs=T, longtable=T, caption=cap, digits
 ```
 
 ```{r table-data-summary, echo=F, message=FALSE, warning=FALSE, comment=F}
-cap="Results from maximal logistic regression model (model 3) testing the effects of network growth values, corpus (English as baseline), word frequency and word length to predict word acquisition. All variables were scaled and centred. Category has been removed for ease of interpretation but is shown in the full model output in S2."
+cap="Results from maximal logistic regression model (model 3) testing the effects of network growth values, corpus (English as baseline), word frequency, vocabulary size, word category, n tokens and word length to predict word acquisition. All variables were scaled and centred. Category has been removed for ease of interpretation but is shown in the full model output in S2."
 knitr::kable(table.model.summary, "latex", booktabs=T, longtable=T, caption=cap, digits=2, align="c",
           col.names=gsub("[.1]", "", names(table.model.summary))) %>%
   add_header_above(c(" "=1, "Actual"=4, "Target"=4))
@@ -839,7 +837,7 @@ plot_smooth(PAT.gamm.1_T, view="AOP", rug=F, col="blue", add=T,
               ylab = "PAT value (scaled)",
               hide.label = T)}
 
-cap <- sprintf("PAT values over time in Actual and Target data, weighted according to accumulative vocabulary size. Blue line represents Actual values, red line represents Target values; coloured bands represent 95%% CIs.")
+cap <- sprintf("PAT values over time in Actual and Target data, weighted according to accumulative vocabulary size. Red line represents Actual values, blue line represents Target values; coloured bands represent 95%% CIs.")
 ```
 
 ```{r figure-GAMM-PAQ, echo=FALSE, fig.cap=cap, fig.pos='H', message=FALSE, warning=FALSE,results='hide',fig.keep='all'}
@@ -859,7 +857,7 @@ plot_smooth(PAQ.gamm.1_T, view="AOP", rug=F, col="blue", add=T,
               ylab = "PAQ values (scaled)",
               hide.label = T)}
 
-cap <- sprintf("PAQ values over time in Actual and Target data, weighted according to accumulative vocabulary size. Blue line represents Actual values, red line represents Target values; coloured bands represent 95%% CIs. Both smooths are shown here for exploratory purposes.")
+cap <- sprintf("PAQ values over time in Actual and Target data, weighted according to accumulative vocabulary size. Red line represents Actual values, blue line represents Target values; coloured bands represent 95%% CIs. Both smooths are shown here for exploratory purposes.")
 ```
 
 ### Data type comparisons
