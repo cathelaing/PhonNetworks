@@ -65,3 +65,5 @@ In addition, the following variables occur across datasets:
 - *Speaker*: Individual subject name from the corpus.
 - *data_type*: Actual or Target data; derived from whether or not the data uses infants' actual phonological productions or the adult target form.
 - *corpus*: English (Providence) or French (Lyon).
+
+**Code used to prepare data for this analysis can be found in a separate Git repo: https://github.com/cathelaing/PhonologicalNetworksPrep**
