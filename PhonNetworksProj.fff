@@ -1,0 +1,29 @@
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\centering
+\includegraphics{PhonNetworksProj_files/figure-latex/figure-GAMM-PAT-1.pdf}
+\caption{\label{fig:figure-GAMM-PAT}PAT values over time in Actual and Target data, weighted according to accumulative vocabulary size. Red line represents Actual values, blue line represents Target values; coloured bands represent 95\% CIs.}
+\end{figure*}
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\centering
+\includegraphics{PhonNetworksProj_files/figure-latex/figure-GAMM-PAQ-1.pdf}
+\caption{\label{fig:figure-GAMM-PAQ}PAQ values over time in Actual and Target data, weighted according to accumulative vocabulary size. Red line represents Actual values, blue line represents Target values; coloured bands represent 95\% CIs. Both smooths are shown here for exploratory purposes.}
+\end{figure*}
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\centering
+\includegraphics{PhonNetworksProj_files/figure-latex/difference-smooth-data-type-1.pdf}
+\caption{\label{fig:difference-smooth-data-type}Difference smooth plot showing difference between scaled PAT values in Actual vs.~Target forms from the GAMM model specified above. Shaded area shows 95\% confidence intervals, red line along x-axis indicates months in which
+the difference between Actual and Target forms was significant.}
+\end{figure*}
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\centering
+\includegraphics{PhonNetworksProj_files/figure-latex/plotted-smooth-data-type-1.pdf}
+\caption{\label{fig:plotted-smooth-data-type}Smooth plot showing scaled PAT values in Actual vs.~Target forms. Shaded areas show 95\% confidence intervals, lines indicate mean trajectories over time, coloured circles represent individual datapoints, jittered for visual clarity.}
+\end{figure*}

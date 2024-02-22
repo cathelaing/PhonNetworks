@@ -1,4 +1,4 @@
-# PhonologicalNetworks - Updated 29th March 2023
+# PhonologicalNetworks - Updated 26th May 2023
 
 Data and code for the project 'Phonological Networks and Systematicity in Early Lexical Acquisition'
 

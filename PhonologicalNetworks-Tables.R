@@ -6,6 +6,12 @@ speaker.data.sessions <- regression_data %>%
   tally() %>%
   rename("n Sessions" = "n")
 
+speaker.data.tokens <- regression_data %>%
+  group_by(corpus, Speaker) %>%
+  tally()  %>% 
+  ungroup() %>%
+  rename("n Tokens" = "n")
+
 speaker.data.sessions.mean <- regression_data %>%  
   group_by(Speaker, corpus) %>%
   distinct(Speaker, age) %>%
@@ -28,6 +34,7 @@ speaker.data.overview <- regression_data %>%
   group_by(Speaker, corpus) %>%
   summarise(`Min. age` = min(age)) %>%
   left_join(speaker.data.sessions) %>%
+  left_join(speaker.data.tokens) %>%
   arrange(corpus)
 
 speaker.data.overview.mean <- regression_data %>%
@@ -66,19 +73,37 @@ table.data.summary.sd <- regression_data %>%
   #spread(corpus, Types) %>%
   summarise(Types = sd(n, na.rm=T))
 
+table.data.summary.tokens.mean <- regression_data %>%
+  group_by(corpus, Speaker) %>%
+  tally()  %>% 
+  ungroup() %>%
+  group_by(corpus) %>%
+  summarise(mean_tokens = mean(n, na.rm=T))
+
+table.data.summary.tokens.sd <- regression_data %>%
+  group_by(corpus, Speaker) %>%
+  tally()  %>% 
+  ungroup() %>%
+  group_by(corpus) %>%
+  summarise(sd_tokens = sd(n, na.rm=T))
+
 overview.sds <- speaker.data.overview.sd %>%
   left_join(speaker.data.sessions.sd) %>%
   left_join(table.data.summary.sd) %>%
+  left_join(table.data.summary.tokens.sd) %>%
   mutate("Speaker" = "SD") %>%
   rename("Min. age" = "sd_age",
-         "n Sessions" = "sd_sessions")
+         "n Sessions" = "sd_sessions",
+         "n Tokens" = "sd_tokens")
 
 overview.means <- speaker.data.overview.mean %>%
   left_join(speaker.data.sessions.mean) %>%
   left_join(table.data.summary.mean) %>%
+  left_join(table.data.summary.tokens.mean) %>%
     mutate("Speaker" = "Mean") %>%
   rename("Min. age" = "mean_age",
-         "n Sessions" = "mean_sessions") %>%
+         "n Sessions" = "mean_sessions",
+         "n Tokens" = "mean_tokens") %>%
   bind_rows(overview.sds)
 
 ### now create means and sds for full corpus
@@ -99,19 +124,35 @@ full.data.summary.sd.typ <- regression_data %>%
   summarise(Types = sd(n, na.rm=T)) %>%
   mutate("Speaker" = "SD")
 
+full.data.summary.tokens.mean <- regression_data %>%
+  group_by(corpus, Speaker) %>%
+  tally()  %>% 
+  ungroup() %>%
+  summarise(`n Tokens` = mean(n, na.rm=T)) %>%
+  mutate("Speaker" = "Mean")
+
+full.data.summary.tokens.sd <- regression_data %>%
+  group_by(corpus, Speaker) %>%
+  tally()  %>% 
+  ungroup() %>%
+  summarise(`n Tokens` = sd(n, na.rm=T)) %>%
+  mutate("Speaker" = "SD")
+
 full.data.summary.mean <- speaker.data.overview %>%
   ungroup() %>%
   summarise(`Min. age` = mean(`Min. age`),
             `n Sessions` = mean(`n Sessions`)) %>%
   mutate("Speaker" = "Mean") %>%
-  left_join(full.data.summary.mean.typ)
+  left_join(full.data.summary.mean.typ) %>%
+  left_join(full.data.summary.tokens.mean)
 
 full.data.summary.sd <- speaker.data.overview %>%
   ungroup() %>%
   summarise(`Min. age` = sd(`Min. age`),
             `n Sessions` = sd(`n Sessions`)) %>%
   mutate("Speaker" = "SD") %>%
-  left_join(full.data.summary.sd.typ)
+  left_join(full.data.summary.sd.typ) %>%
+  left_join(full.data.summary.tokens.sd)
 
 full.data.summary <- full.data.summary.mean %>%
   bind_rows(full.data.summary.sd) %>%
@@ -125,7 +166,7 @@ table.data.overview <- regression_data %>%
   tally() %>% 
   rename("Types" = "n") %>%
   left_join(speaker.data.overview) %>%
-  dplyr::select(Speaker, corpus, `Min. age`, `n Sessions`, Types) %>%
+  dplyr::select(Speaker, corpus, `Min. age`, `n Sessions`, Types, `n Tokens`) %>%
   bind_rows(overview.means) %>%
   rename("Corpus" = "corpus") %>%
   arrange(Corpus) %>%
@@ -133,7 +174,7 @@ table.data.overview <- regression_data %>%
   
 
 table.aop.deg.corr.speaker <- globalthresholds_AOP %>%
-  group_by(Speaker, corpus) %>%
+  group_by(Speaker, corpus, data_type) %>%
   summarize(rho = stats::cor.test(AOP, degree, method = "sp")$estimate,
             pval = stats::cor.test(AOP, degree, method = "sp")$p.value
   ) %>%

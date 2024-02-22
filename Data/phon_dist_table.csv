@@ -1,0 +1,6 @@
+word_pos,Gloss.x,IPAtarget.x,consonant.x,features.x,Gloss.y,IPAtarget.y,consonant.y,features.y,sum_sq_diffs_balloon,Gloss,IPAtarget,consonant,features,sum_sq_diffs_sky
+S1C1,baby,beɪbi,b,"-1,1,0,-1,1,1,0,-1,1,0,0",balloon,bəlun,b,"-1,1,0,-1,1,1,0,-1,1,0,0",0+0+0+0+0+0+0+0+0+0+0,sky,skaɪ,s,"-0.5,1,-1,-1,0,-1,1,-1,-1,1,0",0.25+0+1+0+1+4+1+0+4+1+0
+S1C2,,,-,0,,,-,0,-,sky,skaɪ,k,"-1,1,-1,-1,1,-1,-1,-1,-1,-1,0",1+1+1+1+1+1+1+1+1+1+0
+S2C1,baby,beɪbi,b,"-1,1,0,-1,1,1,0,-1,1,0,0",balloon,bəlun,l,"0.5,0,1,0,-1,-1,1,-1,-1,1,0",2.25+1+1+1+4+4+1+0+4+1+0,,,-,0,1+1+0+1+1+1+0+1+1+0+0
+SFC1,,,-,0,balloon,bəlun,n,"0,0,1,1,1,-1,1,-1,-1,1,0",0+0+1+1+1+1+1+1+1+1+0,,,-,0,-
+Phonological distance (Σ √(sum squared differences)),,,,,balloon,,,,7.21590931844225,sky,,,,9.30802897123297
