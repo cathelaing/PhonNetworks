@@ -269,32 +269,19 @@ eng_comp_vocab <- read_csv("Data/wordbank_item_data_comp_eng.csv") %>%
 ```
 
 Next, network growth models were generated to test whether INT and EXT values predicted which words were produced in the following month. As a reminder, models of both INT- and EXT-like acquisition predict that, for each month, the as-yet-unknown words with the highest INT/EXT values should be learned in the following month. 
-Logistic mixed effects regression models included a binomial dependent variable (coded as 0 or 1) indexing whether, for each as-yet-unknown word at month *n*, it was acquired in month *n+1*. As well as INT and EXT growth values, each model also included target word length in phonemes, reported age of acquisition for each item in the comprehensive vocabulary, input frequency in child-directed speech, word category, and corpus (English vs. French) as fixed effects. Infant was specified as a random effect. Input frequency for each word was derived from Braginsky et al.'s [-@braginsky_consistency_2019] frequency estimates, which includes a unigram count for every word produced in adult speech in all CHILDES corpora for the respective language. Normed comprehensive vocabulary data for English and French CDI words was taken from WordBank [@frank_wordbank_2017]; again following Braginsky and colleagues [-@braginsky_consistency_2019], age of acquisition (AoA) was taken as the month in which >50% of children were reported to understand a given word. As comprehensive vocabulary norms are only available up to ages 16/18 months for French/US English data, respectively, `r length(aoa_na)` total tokens did not include this measure (`r aoa_na_types` individual words), either due to the word being acquired after the cut-off for the CDI checklist (i.e. it was included on the checklist but fewer than 50% of infants understood the word by 16/18 months), or due to it not being included on the checklist in the first place (i.e. it is included on the productive vocabulary checklist only). All relevant variables were scaled and centered. P-values were established through nested model comparisons. Analysis of Actual/Target data includes INT values for the Actual/Target network, respectively; EXT values always represent connectivity in the Target network (i.e. to simulate the adult production of a given word in the input), but models were run on both Actual and Target data since connectivity in these data sets differed due to words generally being more highly connected at a threshold of 0.25 in the Actual data than the Target data. These models were run using the *lme4()* package [@R-lme4] in R [@R-base].
+Logistic mixed effects regression models included a binomial dependent variable (coded as 0 or 1) indexing whether, for each as-yet-unknown word at month *n*, it was acquired in month *n+1*. As well as INT and EXT growth values, each model also included target word length in phonemes, reported age of acquisition for each item in the comprehensive vocabulary, input frequency in child-directed speech, word category, and corpus (English vs. French) as fixed effects. Infant was specified as a random effect. Input frequency for each word was derived from Braginsky et al.'s [-@braginsky_consistency_2019] frequency estimates, which includes a unigram count for every word produced in adult speech in all CHILDES corpora for the respective language. Normed comprehensive vocabulary data for English and French CDI words was taken from WordBank [@frank_wordbank_2017]; again following Braginsky and colleagues [-@braginsky_consistency_2019], age of acquisition (AoA) was taken as the month in which >50% of children were reported to understand a given word. As comprehensive vocabulary norms are only available up to ages 16/18 months for French/US English data, respectively, `r length(aoa_na)` total tokens did not include this measure (`r aoa_na_types` individual words), either due to the word being acquired after the cut-off for the CDI checklist (i.e. it was included on the checklist but fewer than 50% of infants understood the word by 16/18 months), or due to it not being included on the checklist in the first place (i.e. it is included on the productive vocabulary checklist only). All relevant variables were scaled and centered. In each case interactions were included between Word length x Age, Word frequency x Age, AoA x Age and INT/EXT values x Age.  P-values were established through nested model comparisons. Analysis of Actual/Target data includes INT values for the Actual/Target network, respectively; EXT values always represent connectivity in the Target network (i.e. to simulate the adult production of a given word in the input), but models were run on both Actual and Target data since connectivity in these data sets differed due to words generally being more highly connected at a threshold of 0.25 in the Actual data than the Target data. These models were run using the *lme4()* package [@R-lme4] in R [@R-base].
 
-Following Siew and Vitevitch [-@siew_investigation_2020], the first step was to construct three models: a null model (model 0) with word length, frequency, n tokens, word category, vocabulary size, corpus, and age included as predictors of word learning, and then two additional models with PAT (model 1) and PAQ (model 2) growth values included as additional predictors, respectively. 
+Following Siew and Vitevitch [-@siew_investigation_2020], the first step was to construct three models: a null model (model 0) with word length, frequency, n tokens, word category, vocabulary size, corpus, and age included as predictors of word learning, and then two additional models with PAT (model 1) and PAQ (model 2) growth values included as additional predictors, respectively. Models 1 and 2 were then compared against model 0 to test for the effects of PAT and PAQ values individually. A third model (model 3) was then constructed that included both PAT and PAQ values as predictors. Data type (Actual and Target) was modeled separately in each case. The full model specification for model 3 is as follows:
 
-[[CHECK]]In each case interactions were included between Word length x Age, Word frequency x Age, n Tokens x Age, Vocabulary size x Age and PAT/PAQ values x Age. 
-
-Models 1 and 2 were then compared against model 0 to test for the effects of PAT and PAQ values individually. A third model (model 3) was then constructed that included both PAT and PAQ values as predictors. Data type (Actual and Target) was modeled separately in each case. The full model specification for model 3 is as follows:
-
-[[CHECK]]*Model 3*: Learned next ~  EXT value * Age +
+*Model 3*: Learned next ~  
+                EXT value * Age +
                 INT value * Age +
                 Word length * Age +
                 Word frequency * Age +
-                n Tokens * Age +
-                Vocab size * Age +
+                AoA (comprehension) * Age +
                 Category +
                 Corpus +
                 (1 + Age|Speaker)
-                
-                Age of Production ~  EXT value * 
-                INT value * 
-                AoA (comprehension) * 
-                Word length * 
-                Input frequency * 
-                Category +
-                Corpus +
-                (1|Speaker)
 
 ```{r regression model actual, message=FALSE, warning=FALSE, include=FALSE}
 
@@ -309,23 +296,52 @@ reg_dat <- regression_data[which(complete.cases(regression_data[,c('EXT_scaled_t
                                                                    'AOP',
                                                                    'category')])),]
 
+# model_null <- glmer(learned_next ~
+#                     age_scaled +
+#                     length_scaled + 
+#                     #tokens_scaled +
+#                     freq_scaled +
+#                     #vocab_scaled +
+#                     aoa_scaled +
+#                     corpus +
+#                     #category +
+#                     (1+age_scaled|Speaker),
+#                     family=binomial("logit"),
+#                     control=glmerControl(calc.derivs=FALSE,
+#                                          optimizer="bobyqa",
+#                                            # specifiying optimizer to support convergence 
+#                                            #(does not converge without this)
+#                                          optCtrl=list(maxfun=2e5)),
+#                     data=subset(reg_dat, data_type == "actual"))
+# 
+# model_added <- glmer(learned_next ~
+#                       age_scaled +
+#                     length_scaled + 
+#                     #tokens_scaled +
+#                     freq_scaled +
+#                     #vocab_scaled +
+#                     aoa_scaled +
+#                     corpus +
+#                     category +
+#                     (1+age_scaled|Speaker),
+#                     family=binomial("logit"),
+#                     control=glmerControl(calc.derivs=FALSE,
+#                                          optimizer="bobyqa",
+#                                            # specifiying optimizer to support convergence 
+#                                            #(does not converge without this)
+#                                          optCtrl=list(maxfun=2e5)),
+#                     data=subset(reg_dat, data_type == "actual"))
+# 
+# anova(model_null, model_added)
+# 
+# vif(model_added)
 
-model0_A <- lmerTest::lmer(AOP ~ 
-                         freq_scaled*
-                         aoa_scaled*
-                         length_scaled +
-                         #tokens_scaled +
-                         corpus +
-                         category +
-                    (1|Speaker), 
-                  data=subset(reg_dat, data_type == "actual" & age == (AOP-1)),
-             REML=F)
 
 model0_A <- glmer(learned_next ~
                     length_scaled*age_scaled +
-                    tokens_scaled*age_scaled +
+                    #tokens_scaled*age_scaled +
                     freq_scaled*age_scaled +
-                    vocab_scaled*age_scaled +
+                    #vocab_scaled*age_scaled +
                     aoa_scaled*age_scaled +
                     corpus +
                     category +
@@ -333,7 +349,8 @@ model0_A <- glmer(learned_next ~
                     family=binomial("logit"),
                     control=glmerControl(calc.derivs=FALSE,
                                          optimizer="bobyqa",
-                                           # specifiying optimizer to support convergence (does not converge without this)
+                                           # specifiying optimizer to support convergence 
+                                           #(does not converge without this)
                                          optCtrl=list(maxfun=2e5)),
                     data=subset(reg_dat, data_type == "actual"))
 
@@ -342,47 +359,66 @@ model0_A <- glmer(learned_next ~
 # vif(model0_A) 
 
 
-model1_A <- lmerTest::lmer(AOP ~ 
-                         freq_scaled*
-                           INT_scaled*
-                         aoa_scaled*
-                         length_scaled +
-                         #tokens_scaled +
-                         corpus +
-                         category +
-                    (1|Speaker), 
-                  data=subset(reg_dat, data_type == "actual" & age == (AOP-1)),
-             REML=F)
+model1_A <- glmer(learned_next ~
+                    INT_scaled*age_scaled +
+                    length_scaled*age_scaled +
+                    #tokens_scaled*age_scaled +
+                    freq_scaled*age_scaled +
+                    #vocab_scaled*age_scaled +
+                    aoa_scaled*age_scaled +
+                    corpus +
+                    category +
+                    (1+age_scaled|Speaker),
+                    family=binomial("logit"),
+                    control=glmerControl(calc.derivs=FALSE,
+                                         optimizer="bobyqa",
+                                           # specifiying optimizer to support convergence 
+                                           #(does not converge without this)
+                                         optCtrl=list(maxfun=2e5)),
+                    data=subset(reg_dat, data_type == "actual"))
 
-#vif(model2_A)
+#vif(model1_A)
 
 models01_A <- anova(model0_A, model1_A)
 
-model2_A <- lmerTest::lmer(AOP ~ 
-                         freq_scaled*
-                           EXT_scaled_target*
-                         aoa_scaled*
-                         length_scaled +
-                         #tokens_scaled +
-                         corpus +
-                         category +
-                    (1|Speaker), 
-                  data=subset(reg_dat, data_type == "actual" & age == (AOP-1)),
-             REML=F)
+model2_A <- glmer(learned_next ~
+                    EXT_scaled_target*age_scaled +
+                    length_scaled*age_scaled +
+                    #tokens_scaled*age_scaled +
+                    freq_scaled*age_scaled +
+                    #vocab_scaled*age_scaled +
+                    aoa_scaled*age_scaled +
+                    corpus +
+                    category +
+                    (1+age_scaled|Speaker),
+                    family=binomial("logit"),
+                    control=glmerControl(calc.derivs=FALSE,
+                                         optimizer="bobyqa",
+                                           # specifiying optimizer to support convergence 
+                                           #(does not converge without this)
+                                         optCtrl=list(maxfun=2e5)),
+                    data=subset(reg_dat, data_type == "actual"))
 
 models02_A <- anova(model0_A, model2_A)
 
-model3_A <- lmerTest::lmer(AOP ~ 
-                         freq_scaled*
-                         INT_scaled*EXT_scaled_target *
-                         aoa_scaled *
-                         length_scaled +
-                         #tokens_scaled +
-                         corpus +
-                         category +
-                    (1|Speaker), 
-                  data=subset(reg_dat, data_type == "actual" & age == (AOP-1)),
-             REML=F)
+model3_A <- glmer(learned_next ~
+                    INT_scaled*age_scaled +
+                    EXT_scaled_target*age_scaled +
+                    length_scaled*age_scaled +
+                    #tokens_scaled*age_scaled +
+                    freq_scaled*age_scaled +
+                    #vocab_scaled*age_scaled +
+                    aoa_scaled*age_scaled +
+                    corpus +
+                    category +
+                    (1+age_scaled|Speaker),
+                    family=binomial("logit"),
+                    control=glmerControl(calc.derivs=FALSE,
+                                         optimizer="bobyqa",
+                                           # specifiying optimizer to support convergence 
+                                           #(does not converge without this)
+                                         optCtrl=list(maxfun=2e5)),
+                    data=subset(reg_dat, data_type == "actual"))
 
 models13_A <- anova(model1_A, model3_A)
 models23_A <- anova(model2_A, model3_A)
@@ -417,8 +453,8 @@ model3_A_tab <- model.summary_A$coefficients %>%
   rename(
     "b"="Estimate"
      , "SE"="Std. Error"
-     #, "z"="z value"
-     , "p"="Pr(>|t|)") %>%
+     , "z"="z value"
+     , "p"="Pr(>|z|)") %>%
   mutate(
     Effect=papaja:::beautify_terms(rownames(.))
   )
@@ -431,84 +467,112 @@ table.model3_A <- model3_A_tab %>%
   ) %>%
   rownames_to_column(var = "term") %>%
   left_join(confint.model3_A) %>%
-  select(Effect, `df`, `b`, `SE`, `t value`, `p`, `95% CI`) %>%
+  select(Effect, `b`, `SE`, `z`, `p`, `95% CI`) %>%
   rename("beta"=`b`) %>%
   mutate(beta=as.numeric(beta),
         SE=as.numeric(SE),
-        `t value`=as.numeric(`t value`),
+        `z`=as.numeric(`z`),
         `p`=as.numeric(`p`),
-         p=scales::pvalue(p))
+             p=scales::pvalue(p))
 ```
 
 ```{r regression model Target, message=FALSE, warning=FALSE, include=FALSE}
 
-model0_T <- lmerTest::lmer(AOP ~ 
-                         freq_scaled*
-                         aoa_scaled*
-                         length_scaled +
-                         #tokens_scaled +
-                         corpus +
-                         category +
-                    (1|Speaker), 
-                  data=subset(reg_dat, data_type == "target" & age == (AOP-1)),
-             REML=F)
+model0_T <- glmer(learned_next ~
+                    length_scaled*age_scaled +
+                    #tokens_scaled*age_scaled +
+                    freq_scaled*age_scaled +
+                    #vocab_scaled*age_scaled +;
+                    aoa_scaled*age_scaled +
+                    corpus +
+                    category +
+                    (1+age_scaled|Speaker),
+                    family=binomial("logit"),
+                    control=glmerControl(calc.derivs=FALSE,
+                                         optimizer="bobyqa",
+                                           # specifiying optimizer to support convergence 
+                                           #(does not converge without this)
+                                         optCtrl=list(maxfun=2e5)),
+                    data=subset(reg_dat, data_type == "target"))
 
-#summary(model0_T)
+# summary(model0_T)
 
-#vif(model0_T)
+# vif(model0_T) 
 
-model1_T <- lmerTest::lmer(AOP ~ 
-                         freq_scaled*
-                         INT_scaled*
-                         aoa_scaled*
-                         length_scaled +
-                         #tokens_scaled +
-                         corpus +
-                         category +
-                    (1|Speaker), 
-                  data=subset(reg_dat, data_type == "target" & age == (AOP-1)),
-             REML=F)
+
+model1_T <- glmer(learned_next ~
+                    INT_scaled*age_scaled +
+                    length_scaled*age_scaled +
+                    #tokens_scaled*age_scaled +
+                    freq_scaled*age_scaled +
+                    #vocab_scaled*age_scaled +
+                    aoa_scaled*age_scaled +
+                    corpus +
+                    category +
+                    (1+age_scaled|Speaker),
+                    family=binomial("logit"),
+                    control=glmerControl(calc.derivs=FALSE,
+                                         optimizer="bobyqa",
+                                           # specifiying optimizer to support convergence 
+                                           #(does not converge without this)
+                                         optCtrl=list(maxfun=2e5)),
+                    data=subset(reg_dat, data_type == "target"))
+
+#vif(model1_T)
 
 models01_T <- anova(model0_T, model1_T)
 
-model2_T <- lmerTest::lmer(AOP ~  
-                         freq_scaled*
-                         EXT_scaled_target*
-                         aoa_scaled*
-                         length_scaled +
-                         #tokens_scaled +
-                         corpus +
-                         category +
-                    (1|Speaker), 
-                  data=subset(reg_dat, data_type == "target" & age == (AOP-1)),
-             REML=F)
+model2_T <- glmer(learned_next ~
+                    EXT_scaled_target*age_scaled +
+                    length_scaled*age_scaled +
+                    #tokens_scaled*age_scaled +
+                    freq_scaled*age_scaled +
+                    #vocab_scaled*age_scaled +
+                    aoa_scaled*age_scaled +
+                    corpus +
+                    category +
+                    (1+age_scaled|Speaker),
+                    family=binomial("logit"),
+                    control=glmerControl(calc.derivs=FALSE,
+                                         optimizer="bobyqa",
+                                           # specifiying optimizer to support convergence 
+                                           #(does not converge without this)
+                                         optCtrl=list(maxfun=2e5)),
+                    data=subset(reg_dat, data_type == "target"))
 
 models02_T <- anova(model0_T, model2_T)
 
-model3_T <- lmerTest::lmer(AOP ~   
-                         freq_scaled*
-                         EXT_scaled_target*
-                         INT_scaled*
-                         aoa_scaled*
-                         length_scaled +
-                         #tokens_scaled +
-                         corpus +
-                         category +
-                    (1|Speaker), 
-                  data=subset(reg_dat, data_type == "target" & age == (AOP-1)),
-             REML=F)
+model3_T <- glmer(learned_next ~
+                    INT_scaled*age_scaled +
+                    EXT_scaled_target*age_scaled +
+                    length_scaled*age_scaled +
+                    #tokens_scaled*age_scaled +
+                    freq_scaled*age_scaled +
+                    #vocab_scaled*age_scaled +
+                    aoa_scaled*age_scaled +
+                    corpus +
+                    category +
+                    (1+age_scaled|Speaker),
+                    family=binomial("logit"),
+                    control=glmerControl(calc.derivs=FALSE,
+                                         optimizer="bobyqa",
+                                           # specifiying optimizer to support convergence 
+                                           #(does not converge without this)
+                                         optCtrl=list(maxfun=2e5)),
+                    data=subset(reg_dat, data_type == "target"))
 
 models13_T <- anova(model1_T, model3_T)
 models23_T <- anova(model2_T, model3_T)
 
 confint.model3_T <- tidy(model3_T,effects="fixed",conf.int=TRUE) %>%
-  select(term, conf.high, conf.low) %>%
+  select(term, conf.low, conf.high) %>%
   mutate(across(where(is.numeric), round, 2)) %>%
-  unite(`95% CI`, c(conf.high, conf.low), sep = ",",)
+  unite(`95% CI`, c(conf.low, conf.high), sep = ",",)
 
 confint.model3_T$`95% CI` <- paste0("[", confint.model3_T$`95% CI`, "]")
 
-#summary(model3_T)
+
+#summary(model0_T)
 
 table.T.model.output <- rbind(models01_T, models02_T, models13_T, models23_T) %>%
   rownames_to_column(var="Model") %>%
@@ -533,8 +597,8 @@ model3_T_tab <- model.summary_T$coefficients %>%
   rename(
     "b"="Estimate"
      , "SE"="Std. Error"
-     #, "z"="z value"
-     , "p"="Pr(>|t|)") %>%
+     , "z"="z value"
+     , "p"="Pr(>|z|)") %>%
   mutate(
     Effect=papaja:::beautify_terms(rownames(.))
   )
@@ -547,37 +611,38 @@ table.model3_T <- model3_T_tab %>%
   ) %>%
   rownames_to_column(var = "term") %>%
   left_join(confint.model3_T) %>%
-  select(Effect, `df`, `b`, `SE`, `t value`, `p`, `95% CI`) %>%
+  select(Effect, `b`, `SE`, `z`, `p`, `95% CI`) %>%
   rename("beta"=`b`) %>%
   mutate(beta=as.numeric(beta),
         SE=as.numeric(SE),
-        `t value`=as.numeric(`t value`),
+        `z`=as.numeric(`z`),
         `p`=as.numeric(`p`),
-         p=scales::pvalue(p))
+             p=scales::pvalue(p))
 
 rownames(table.model3_T) <- NULL
 
 table.model.3 <- cbind(table.model3_A, table.model3_T)
-table.model.summary <- table.model.3[,-8]
+table.model.summary <- table.model.3[,-7]
 
 #table.model.summary$Effect
 
 table.model.summary <- table.model.summary %>% mutate(Effect=fct_recode(Effect,
                                               `EXT value`="EXT scaled target",
                                               `INT value`="INT scaled",
+                                              Age="Age scaled",
                                                AoA="Aoa scaled",
                                                Length="Length scaled",
-                                               `n Tokens` = "Tokens scaled",
+                                              # `n Tokens` = "Tokens scaled",
                                               `Input frequency`="Freq scaled",
-                                              `Vocab size` = "Vocab scaled",
+                                              #`Vocab size` = "Vocab scaled",
                                               `Corpus` = "CorpusEnglish",
-                                              `INT x EXT`="INT scaled $\\times$ EXT scaled target",
-                                              `INT x AoA`="INT scaled $\\times$ Aoa scaled",
-                                              `EXT x AoA`="EXT scaled target $\\times$ Aoa scaled",
-                                              `INT x Length` = "INT scaled $\\times$ Length scaled",
-                                              `EXT x Length` = "EXT scaled target $\\times$ Length scaled",
-                                              `INT x Input frequency` = "Freq scaled $\\times$ INT scaled",
-                                              `EXT x Input frequency` = "Freq scaled $\\times$ EXT scaled target"
+                                              `Age x AoA`="Age scaled $\\times$ Aoa scaled",
+                                              `Age x Length`="Length scaled $\\times$ Age scaled",
+                                              `Age x n Tokens` = "Age scaled $\\times$ Tokens scaled",
+                                              `Age x Input frequency`="Age scaled $\\times$ Freq scaled",
+                                              `Age x Vocab size`="Age scaled $\\times$ Vocab scaled",
+                                              `Age x EXT`="Age scaled $\\times$ EXT scaled target",
+                                              `Age x INT`="INT scaled $\\times$ Age scaled"
                                              )) %>%
   filter(!(grepl("Category", Effect, ignore.case = TRUE)),
          !(grepl("scaled", Effect, ignore.case = TRUE)))
@@ -613,32 +678,27 @@ knitr::kable(table.model.summary, "latex", booktabs=T, longtable=T, caption=cap,
   add_header_above(c(" "=1, "Actual"=6, "Target"=6))
 ```
 
-Nested model comparisons revealed that, in both the Actual and Target data, INT values improved model fit over and above the effects of  AoA, word length, input frequency, word category and corpus. See Table \@ref(tab:table-model-outputs). EXT values improved model fit in neither Actual nor Target data in their own right, but the model with both INT and EXT values included (model 3) was a better fit to the data than models with only INT/EXT values. 
+In the Actual and Target data, INT values improved model fit over and above the effects of input frequency, normed age of acquisition, word length, category, corpus, and age, whereas EXT values did not. See Table \@ref(tab:table-model-outputs). When EXT values were added to the model testing just INT values, model fit was not improved over and above the effects of INT alone, but When INT values were added to the model testing only EXT values, model fit improved in both Actual and Target data. INT thus appears to be a predictor of acquisition in both Actual and Target data, while EXT does not appear to predict learning.
 
-Looking at the model coefficients, higher INT values predicted acquisition in the Target data, which is as expected (*b*=`r printnum(target_beta_INT)`, *p*=`r printp(target_p_INT)`), whereas *lower* INT values predicted acquisition in the Actual data.   (Actual data: *b*=`r printnum(actual_beta_INT)`, *p* `r printp(actual_p_INT)`; Target data: , providing support for H1. Contrasting with the model comparisons reported above, EXT values did not predict learning in the Actual data (*p* `r printp(actual_p_EXT)`), whereas they did in the Target data but in the opposite direction to what was expected; words with lower EXT values were more likely to be learned  
-
-Alongside INT values, AoA norms and word length also predicted acquisition
-input frequency, n tokens, vocabulary size and age were all significant predictors of acquisition in both Actual and Target data [CHECK]: less frequent words were more likely to be learned, as were words with a higher token count. Somewhat counter-intuitively, lower vocabulary size but higher age both predicted learning, likely because a word is both more likely to be added to a smaller vocabulary (i.e. it hasn't been produced before) but, if it hasn't already been learned, as-yet-unknown words are increasingly likely to be learned in the following month, and this likelihood increases over time. Corpus and word category predicted learning in the Target data only; a word was significantly more likely to be acquired in the following month in the English (Target) data, likely because the English corpus was larger than the French corpus (see Table \@ref(tab:table-data-overview)). Category has been removed the Table \@ref(tab:table-data-summary) for ease of reading, but is shown in the full model output in the SI (S2). Comprehensive AoA did not signifcantly predict learning in either model. [CHECK]
-
-Input frequency, n tokens and vocabulary size all interacted significantly with age in both Actual and Target data: higher-frequency words were acquired earlier, as were words with lower token counts. As can be expected, vocabulary size was smaller at earlier ages. Interactions with INT and EXT values will be explored below. 
+Model outputs are shown in Table \@ref(tab:table-data-summary). In both Actual and Target data, higher INT values predicted acquisition (Actual data: *b*=`r printnum(actual_beta_INT)`, *p* `r printp(actual_p_INT)`; Target data: *b*=`r printnum(target_beta_INT)`, *p*=`r printp(target_p_INT)`), providing support for H1. Alongside INT values, input frequency, normed comprehensive AoA and corpus were all significant predictors of acquisition in both Actual and Target data: unsurprisingly, words with a lower comprehensive AoA (according to vocabulary norms for each language) were more likely to be learned, and words that were more frequent in caregiver speech. Words were more likely to be acquired in the following month in the English data, likely because the English corpus was larger than the French corpus (see Table \@ref(tab:table-data-overview)). Word length in phonemes and age were significant in the Target but not the Actual data; shorter words were more likely to be learned, and words were more likely to be learned at later timepoints. Category has been removed the Table \@ref(tab:table-data-summary) for ease of reading, but is shown in the full model output in the SI (S2). AoA interacted significantly with age in both Actual and Target data: as one might expect, words with lower comprehensive AoA norms were typically learned at earlier timepoints, and vice versa. COntrary to expectations, neither INT nor EXT values interacted significantly with age. This will be explored further below.
 
 ### INT-like growth over time
 
 ```{r GAMM prep, echo=F, message=FALSE, warning=FALSE, comment=F}
 
-#reg_data <- subset(regression_data, age == (AOP-1))
+reg_data_subset <- subset(regression_data, age == (AOP-1))
 
-reg_dat_actual <- subset(reg_dat, data_type == "actual")
-reg_dat_target <- subset(reg_dat, data_type == "target")
+reg_dat_actual <- subset(reg_data_subset, data_type == "actual")
+reg_dat_target <- subset(reg_data_subset, data_type == "target")
 
 reg_dat_actual$start.event <- reg_dat_actual$session_ordinal == 1 
 reg_dat_target$start.event <- reg_dat_target$session_ordinal == 1 
 
 ```
 
-H2 predicted a change in INT-like growth over time, such that INT values should predict learning more effectively in earlier acquisition than later acquisition. That is, earlier words should have higher INT values relative to vocabulary size than later-acquired words. The models reported above show significant INT x Age interactions for both Actual and Target data, as well as a significant EXT x Age interaction in the Target data (see Table \@ref(tab:table-data-summary)). However, the direction of this effect is not as expected: in the Actual data, INT values of newly-learned words are lower earlier on in development, while they are higher in the Target data. In the Target data, EXT values of newly-learned words were lower at earlier ages. 
+H2 predicted a change in INT-like growth over time, such that INT values should predict learning more effectively in earlier acquisition than later acquisition. That is, earlier words should have higher INT values relative to vocabulary size than later-acquired words. While the models reported above show no significant INT x Age interactions for neither Actual nor Target data, model coefficients suggest that the effect of age on phonological systematicity is not as expected: INT values of newly-learned words are lower earlier on in development (see Table \@ref(tab:table-data-summary)).
 
-To explore these results further, GAMMs were run using the *mgcv()* package in R [@R-mgcv_a], to observe how INT values changed over time as new words were learned. The data was sub-setted to include only INT values at the time-point immediately prior to the word's production as the dependent variable in the model (i.e. for a word produced at 17 months, its INT value at 16 months was analysed); higher INT values are expected to predict that a word would be learned in the next month. This left `r nrow(reg_dat_actual)` data points for the Actual data, and `r nrow(reg_dat_target)` for the Target data. EXT values for the same month were included as a fixed effect. Otherwise, models incorporated the same fixed effects and interactions as in the mixed-effects regression models above. By-infant and by-corpus random smooths were included in the model for the effect of age; these control for by-infant and by-corpus differences in the data over time. To account for the fact that adjacent values (i.e. INT values at month *n* and month *n+1*) were likely correlated, an autocorrelation parameter was included, which was derived from an initial full model. The start point for each infant's dataset (i.e. their first recording session) was also indexed in the model. To test for the effect of age, model comparisons were run using the *compareML()* function from the *itsadug()* package [@R-itsadug]: the full model included the effect of age as a smooth term, as well as interactions between age and EXT values, input frequency, word length, number of tokens, and vocabulary size. This was compared to another model that did not include the effect of age in either smooth terms or interactions. Because model summaries for GAMM smooths may be non-conservative [@soskuthy_generalised_2017], any significant effects in the initial model comparisons will be assessed using smooth plots of the models. Given that a EXT x Age interaction was identified in the Target data, the same models will also be run with EXT values as the dependent variable (and INT values as a fixed effect). This component of the analysis will be exploratory given that we have no expectation as to how EXT values will affect learning over time. As above, Actual and Target data were modeled separately. 
+To explore these results further, GAMMs were run using the *mgcv()* package in R [@R-mgcv_a], to observe how INT values changed over time as new words were learned. The data was sub-setted to include only INT values at the time-point immediately prior to the word's production as the dependent variable in the model (i.e. for a word produced at 17 months, its INT value at 16 months was analysed); higher INT values are expected to predict that a word would be learned in the next month. This left `r nrow(reg_dat_actual)` data points for the Actual data, and `r nrow(reg_dat_target)` for the Target data. EXT values for the same month were included as a fixed effect. Otherwise, models incorporated the same fixed effects and interactions as in the mixed-effects regression models above. By-infant and by-corpus random smooths were included in the model for the effect of age; these control for by-infant and by-corpus differences in the data over time. To account for the fact that adjacent values (i.e. INT values at month *n* and month *n+1*) were likely correlated, an autocorrelation parameter was included, which was derived from an initial full model. The start point for each infant's dataset (i.e. their first recording session) was also indexed in the model. To test for the effect of age, model comparisons were run using the *compareML()* function from the *itsadug()* package [@R-itsadug]: the full model included the effect of age as a smooth term, as well as interactions between age and EXT values, input frequency, word length, number of tokens, and vocabulary size. This was compared to another model that did not include the effect of age in either smooth terms or interactions. Because model summaries for GAMM smooths may be non-conservative [@soskuthy_generalised_2017], any significant effects in the initial model comparisons will be assessed using smooth plots of the models. To continue to explore the independent roles of INT- and EXT-like growth in the data, the same models will also be run with EXT values as the dependent variable (and INT values as a fixed effect). This component of the analysis will be exploratory given that we have no expectation as to how EXT values will affect learning over time, and given that EXT values did not significantly predict learning. As above, Actual and Target data were modeled separately. 
 
 ```{r GAMM age actual INT, message=FALSE, warning=FALSE, include=FALSE}
 
@@ -647,15 +707,17 @@ INT.gamm.base_A <- bam(INT_scaled ~
                        category +
                        s(freq_scaled, bs = "cr") + 
                        s(length_scaled, bs = "cr") +
-                       s(tokens_scaled, bs = "cr") + 
-                       s(vocab_scaled, bs = "cr") +
+                       # s(tokens_scaled, bs = "cr") + 
+                       # s(vocab_scaled, bs = "cr") +
+                       s(aoa_scaled, bs = "cr") +
                        s(EXT_target, bs = "cr") +
                        s(AOP, bs = "cr") +                       
                        ti(AOP, EXT_target) +
-                       ti(AOP, freq_scaled) + 
+                       ti(AOP, freq_scaled) +
+                       ti(AOP, aoa_scaled) +
                        ti(AOP, length_scaled) +
-                       ti(AOP, tokens_scaled) +
-                       ti(AOP, vocab_scaled) +
+                       # ti(AOP, tokens_scaled) +
+                       # ti(AOP, vocab_scaled) +
                        s(AOP, by=Speaker, bs="cr") +
                        s(AOP, by=corpus, bs="cr"),
                      dat=reg_dat_actual, method="ML")
@@ -667,15 +729,17 @@ INT.gamm.1_A <- bam(INT_scaled ~
                       category +
                       s(freq_scaled, bs = "cr") + 
                       s(length_scaled, bs = "cr") +
-                      s(tokens_scaled, bs = "cr") + 
-                      s(vocab_scaled, bs = "cr") +
+                      # s(tokens_scaled, bs = "cr") + 
+                      # s(vocab_scaled, bs = "cr") +
+                      s(aoa_scaled, bs = "cr") +
                        s(EXT_target, bs = "cr") +
                        s(AOP, bs = "cr") +                       
                        ti(AOP, EXT_target) +
                        ti(AOP, freq_scaled) + 
+                      ti(AOP, aoa_scaled) +
                        ti(AOP, length_scaled) +
-                       ti(AOP, tokens_scaled) +
-                         ti(AOP, vocab_scaled) +
+                       # ti(AOP, tokens_scaled) +
+                       #   ti(AOP, vocab_scaled) +
                       s(AOP, corpus, bs="fs", m=1, k=2) +
                       s(AOP, Speaker, bs="fs", m=1, k=9),  
                         data = reg_dat_actual, method = "ML", 
@@ -686,12 +750,14 @@ INT.gamm.0_A <- bam(INT_scaled ~
                       category +
                       s(freq_scaled, bs = "cr") + 
                       s(length_scaled, bs = "cr") +
-                      s(tokens_scaled, bs = "cr") + 
-                      s(vocab_scaled, bs = "cr") +
+                      # s(tokens_scaled, bs = "cr") + 
+                      # s(vocab_scaled, bs = "cr") +
+                      s(aoa_scaled, bs = "cr") +
                       s(EXT_target, bs = "cr") +
                        # s(AOP, bs = "cr") +                       
                        # ti(AOP, EXT_target) +
                        # ti(AOP, freq_scaled) + 
+                       # ti(AOP, aoa_scaled) +
                        # ti(AOP, length_scaled) +
                        # ti(AOP, tokens_scaled) +
                        # ti(AOP, vocab_scaled) +
@@ -705,11 +771,11 @@ INT.gamm.A <- INT.gamm.actual$table
 
 INT.gamm.A_summ <- summary(INT.gamm.1_A)
 
-source("gamm_hacks.r") 
-plot_smooth.cont(INT.gamm.1_A, view="AOP", plot_all.c="Speaker", rug=F, rm.ranef=F)
-
-summary.coefs(INT.gamm.1_A, digits=3)
-inspect_random(INT.gamm.1_A, select=13, lwd=3, main="random smooths by speaker")
+# source("gamm_hacks.r") 
+# plot_smooth.cont(INT.gamm.1_A, view="AOP", plot_all.c="Speaker", rug=F, rm.ranef=F)
+# 
+# summary.coefs(INT.gamm.1_A, digits=3)
+# inspect_random(INT.gamm.1_A, select=13, lwd=3, main="random smooths by speaker")
 
 ```
 
@@ -720,15 +786,17 @@ INT.gamm.base_T <- bam(INT_scaled ~
                        category +
                        s(freq_scaled, bs = "cr") + 
                        s(length_scaled, bs = "cr") +
-                       s(tokens_scaled, bs = "cr") + 
-                       s(vocab_scaled, bs = "cr") +
+                       # s(tokens_scaled, bs = "cr") + 
+                       # s(vocab_scaled, bs = "cr") +
                        s(EXT_target, bs = "cr") +
+                       s(aoa_scaled, bs = "cr") +
                        s(AOP, bs = "cr") +                       
                        ti(AOP, EXT_target) +
+                         ti(AOP, aoa_scaled) +
                        ti(AOP, freq_scaled) + 
                        ti(AOP, length_scaled) +
-                       ti(AOP, tokens_scaled) +
-                       ti(AOP, vocab_scaled) +
+                       # ti(AOP, tokens_scaled) +
+                       # ti(AOP, vocab_scaled) +
                        s(AOP, by=Speaker, bs="cr") +
                        s(AOP, by=corpus, bs="cr"),
                      dat=reg_dat_target, method="ML")
@@ -740,15 +808,17 @@ INT.gamm.1_T <- bam(INT_scaled ~
                       category +
                       s(freq_scaled, bs = "cr") + 
                       s(length_scaled, bs = "cr") +
-                      s(tokens_scaled, bs = "cr") + 
-                      s(vocab_scaled, bs = "cr") +
+                      # s(tokens_scaled, bs = "cr") + 
+                      # s(vocab_scaled, bs = "cr") +
                        s(EXT_target, bs = "cr") +
+                       s(aoa_scaled, bs = "cr") +
                        s(AOP, bs = "cr") +                       
                        ti(AOP, EXT_target) +
+                      ti(AOP, aoa_scaled) +
                        ti(AOP, freq_scaled) + 
                        ti(AOP, length_scaled) +
-                       ti(AOP, tokens_scaled) +
-                         ti(AOP, vocab_scaled) +
+                       # ti(AOP, tokens_scaled) +
+                       #   ti(AOP, vocab_scaled) +
                       s(AOP, corpus, bs="fs", m=1, k=2) +
                       s(AOP, Speaker, bs="fs", m=1, k=9),  
                         data = reg_dat_target, method = "ML", 
@@ -759,12 +829,14 @@ INT.gamm.0_T <- bam(INT_scaled ~
                       category +
                       s(freq_scaled, bs = "cr") + 
                       s(length_scaled, bs = "cr") +
-                      s(tokens_scaled, bs = "cr") + 
-                      s(vocab_scaled, bs = "cr") +
+                      # s(tokens_scaled, bs = "cr") + 
+                      # s(vocab_scaled, bs = "cr") +
                        s(EXT_target, bs = "cr") +
+                      s(aoa_scaled, bs = "cr") +
                        # s(AOP, bs = "cr") +                       
                        # ti(AOP, EXT_target) +
                        # ti(AOP, freq_scaled) + 
+                     # ti(AOP, aoa_scaled) +
                        # ti(AOP, length_scaled) +
                        # ti(AOP, tokens_scaled) +
                        #   ti(AOP, vocab_scaled) +
@@ -779,7 +851,7 @@ INT.gamm.T <- INT.gamm.target$table
 INT.gamm.A.summ <- summary(INT.gamm.1_A)
 INT.gamm.T.summ <- summary(INT.gamm.1_T)
 
-inspect_random(INT.gamm.1_T, select=13, lwd=3, main="random smooths by speaker")
+#inspect_random(INT.gamm.1_T, select=13, lwd=3, main="random smooths by speaker")
 
 ```
 
@@ -790,15 +862,17 @@ EXT.gamm.base_A <- bam(EXT_scaled_target ~
                        category +
                        s(freq_scaled, bs = "cr") + 
                        s(length_scaled, bs = "cr") +
-                       s(tokens_scaled, bs = "cr") + 
-                       s(vocab_scaled, bs = "cr") +
+                       # s(tokens_scaled, bs = "cr") + 
+                       # s(vocab_scaled, bs = "cr") +
                        s(INT_scaled, bs = "cr") +
+                         s(aoa_scaled, bs = "cr") +
                        s(AOP, bs = "cr") +                       
                        ti(AOP, INT_scaled) +
+                         ti(AOP, aoa_scaled) +
                        ti(AOP, freq_scaled) + 
                        ti(AOP, length_scaled) +
-                       ti(AOP, tokens_scaled) +
-                       ti(AOP, vocab_scaled) +
+                       # ti(AOP, tokens_scaled) +
+                       # ti(AOP, vocab_scaled) +
                        s(AOP, by=Speaker, bs="cr") +
                        s(AOP, by=corpus, bs="cr"),
                      dat=reg_dat_actual, method="ML")
@@ -810,15 +884,17 @@ EXT.gamm.1_A <- bam(EXT_scaled_target ~
                       category +
                       s(freq_scaled, bs = "cr") + 
                       s(length_scaled, bs = "cr") +
-                      s(tokens_scaled, bs = "cr") + 
-                      s(vocab_scaled, bs = "cr") +
+                      # s(tokens_scaled, bs = "cr") + 
+                      # s(vocab_scaled, bs = "cr") +
                        s(INT_scaled, bs = "cr") +
+                      s(aoa_scaled, bs = "cr") +
                        s(AOP, bs = "cr") +                       
                        ti(AOP, INT_scaled) +
+                      ti(AOP, aoa_scaled) +
                        ti(AOP, freq_scaled) + 
                        ti(AOP, length_scaled) +
-                       ti(AOP, tokens_scaled) +
-                         ti(AOP, vocab_scaled) +
+                       # ti(AOP, tokens_scaled) +
+                       #   ti(AOP, vocab_scaled) +
                       s(AOP, corpus, bs="fs", m=1, k=2) +
                       s(AOP, Speaker, bs="fs", m=1, k=9),  
                         data = reg_dat_actual, method = "ML", 
@@ -829,11 +905,13 @@ EXT.gamm.0_A <- bam(EXT_scaled_target ~
                       category +
                       s(freq_scaled, bs = "cr") + 
                       s(length_scaled, bs = "cr") +
-                      s(tokens_scaled, bs = "cr") + 
-                      s(vocab_scaled, bs = "cr") +
+                      # s(tokens_scaled, bs = "cr") + 
+                      # s(vocab_scaled, bs = "cr") +
                        s(INT_scaled, bs = "cr") +
+                      s(aoa_scaled, bs = "cr") +
                        # s(AOP, bs = "cr") +                       
                        # ti(AOP, INT_scaled) +
+                      # ti(AOP, aoa_scaled) +
                        # ti(AOP, freq_scaled) + 
                        # ti(AOP, length_scaled) +
                        # ti(AOP, tokens_scaled) +
@@ -859,15 +937,17 @@ EXT.gamm.base_T <- bam(EXT_scaled_target ~
                        category +
                        s(freq_scaled, bs = "cr") + 
                        s(length_scaled, bs = "cr") +
-                       s(tokens_scaled, bs = "cr") + 
-                       s(vocab_scaled, bs = "cr") +
+                       # s(tokens_scaled, bs = "cr") + 
+                       # s(vocab_scaled, bs = "cr") +
                        s(INT_scaled, bs = "cr") +
+                         s(aoa_scaled, bs = "cr") +
                        s(AOP, bs = "cr") +                       
                        ti(AOP, INT_scaled) +
+                         ti(AOP, aoa_scaled) +
                        ti(AOP, freq_scaled) + 
                        ti(AOP, length_scaled) +
-                       ti(AOP, tokens_scaled) +
-                       ti(AOP, vocab_scaled) +
+                       # ti(AOP, tokens_scaled) +
+                       # ti(AOP, vocab_scaled) +
                        s(AOP, by=Speaker, bs="cr") +
                        s(AOP, by=corpus, bs="cr"),
                      dat=reg_dat_target, method="ML")
@@ -879,15 +959,17 @@ EXT.gamm.1_T <- bam(EXT_scaled_target ~
                       category +
                       s(freq_scaled, bs = "cr") + 
                       s(length_scaled, bs = "cr") +
-                      s(tokens_scaled, bs = "cr") + 
-                      s(vocab_scaled, bs = "cr") +
+                      # s(tokens_scaled, bs = "cr") + 
+                      # s(vocab_scaled, bs = "cr") +
                        s(INT_scaled, bs = "cr") +
+                      s(aoa_scaled, bs = "cr") +
                        s(AOP, bs = "cr") +                       
                        ti(AOP, INT_scaled) +
+                      ti(AOP, aoa_scaled) +
                        ti(AOP, freq_scaled) + 
                        ti(AOP, length_scaled) +
-                       ti(AOP, tokens_scaled) +
-                         ti(AOP, vocab_scaled) +
+                       # ti(AOP, tokens_scaled) +
+                       #   ti(AOP, vocab_scaled) +
                       s(AOP, corpus, bs="fs", m=1, k=2) +
                       s(AOP, Speaker, bs="fs", m=1, k=9), 
                         data = reg_dat_target, method = "ML", 
@@ -898,11 +980,13 @@ EXT.gamm.0_T <- bam(EXT_scaled_target ~
                       category +
                       s(freq_scaled, bs = "cr") + 
                       s(length_scaled, bs = "cr") +
-                      s(tokens_scaled, bs = "cr") + 
-                      s(vocab_scaled, bs = "cr") +
+                      # s(tokens_scaled, bs = "cr") + 
+                      # s(vocab_scaled, bs = "cr") +
                        s(INT_scaled, bs = "cr") +
+                      s(aoa_scaled, bs = "cr") +
                        # s(AOP, bs = "cr") +                       
                        # ti(AOP, INT_scaled) +
+                      # ti(AOP, aoa_scaled) +
                        # ti(AOP, freq_scaled) + 
                        # ti(AOP, length_scaled) +
                        # ti(AOP, tokens_scaled) +
@@ -928,21 +1012,22 @@ DT.gamm.base <- bam(INT_scaled ~ data_type +
                        category +
                        s(freq_scaled, bs = "cr") + 
                        s(length_scaled, bs = "cr") +
-                       s(tokens_scaled, bs = "cr") + 
-                       s(vocab_scaled, bs = "cr") +
+                       # s(tokens_scaled, bs = "cr") + 
+                       # s(vocab_scaled, bs = "cr") +
                        s(EXT_scaled_target, bs = "cr") +
+                      s(aoa_scaled, bs = "cr") +
                        s(AOP, bs = "cr") +   
                        s(AOP, by = data_type) + 
-                      #### check ###
-                       ti(AOP, EXT_scaled_target) +  ## check this! Why are these 2 vars not the same? see below as well
+                       ti(AOP, EXT_scaled_target) +  
+                      ti(AOP, aoa_scaled) +
                        ti(AOP, freq_scaled) + 
                        ti(AOP, length_scaled) +
-                       ti(AOP, tokens_scaled) +
-                       ti(AOP, vocab_scaled) +
+                       # ti(AOP, tokens_scaled) +
+                       # ti(AOP, vocab_scaled) +
                        s(AOP, by=data_type, bs="cr") +
                        s(AOP, by=Speaker, bs="cr") +
                        s(AOP, by=corpus, bs="cr"),
-                     dat=reg_data, method="ML")
+                     dat=reg_data_subset, method="ML")
 
 rDT <- start_value_rho(DT.gamm.base) 
 #summary(DT.gamm.1)
@@ -952,42 +1037,46 @@ DT.gamm.1 <- bam(INT_scaled ~ data_type +
                        category +
                        s(freq_scaled, bs = "cr") + 
                        s(length_scaled, bs = "cr") +
-                       s(tokens_scaled, bs = "cr") + 
-                       s(vocab_scaled, bs = "cr") +
+                       # s(tokens_scaled, bs = "cr") + 
+                       # s(vocab_scaled, bs = "cr") +
                        s(EXT_scaled_target, bs = "cr") +
+                   s(aoa_scaled, bs = "cr") +
                        s(AOP, bs = "cr") +    
                        s(AOP, by = data_type) +                       
                        ti(AOP, EXT_scaled_target) +
+                   ti(AOP, aoa_scaled) +
                        ti(AOP, freq_scaled) + 
                        ti(AOP, length_scaled) +
-                       ti(AOP, tokens_scaled) +
-                       ti(AOP, vocab_scaled) +
+                       # ti(AOP, tokens_scaled) +
+                       # ti(AOP, vocab_scaled) +
                        s(AOP, corpus, bs="fs", m=1, k=2) +
                        s(AOP, data_type, bs="fs", m=1, k=2) +
                        s(AOP, Speaker, bs="fs", m=1, k=9),  
-                       dat=reg_data, method="ML",
-                        rho=rDT, AR.start=reg_data$start.event)
+                       dat=reg_data_subset, method="ML",
+                        rho=rDT, AR.start=reg_data_subset$start.event)
 
 DT.gamm.0 <- bam(INT_scaled ~ #data_type +
                        corpus +
                        category +
                        s(freq_scaled, bs = "cr") + 
                        s(length_scaled, bs = "cr") +
-                       s(tokens_scaled, bs = "cr") + 
-                       s(vocab_scaled, bs = "cr") +
+                       # s(tokens_scaled, bs = "cr") + 
+                       # s(vocab_scaled, bs = "cr") +
                        s(EXT_scaled_target, bs = "cr") +
+                   s(aoa_scaled, bs = "cr") +
                        s(AOP, bs = "cr") +   
                        #s(AOP, by = data_type) + 
                        ti(AOP, EXT_scaled_target) +
+                   ti(AOP, aoa_scaled) +
                        ti(AOP, freq_scaled) + 
                        ti(AOP, length_scaled) +
-                       ti(AOP, tokens_scaled) +
-                       ti(AOP, vocab_scaled) +
+                       # ti(AOP, tokens_scaled) +
+                       # ti(AOP, vocab_scaled) +
                        s(AOP, corpus, bs="fs", m=1, k=2) +
                        #s(AOP, data_type, bs="fs", m=1, k=2) +
                        s(AOP, Speaker, bs="fs", m=1, k=9),  
-                       dat=reg_data, method="ML",
-                        rho=rDT, AR.start=reg_data$start.event)
+                       dat=reg_data_subset, method="ML",
+                        rho=rDT, AR.start=reg_data_subset$start.event)
 
 
 gamm.data.type <- compareML(DT.gamm.1, DT.gamm.0)
@@ -1083,7 +1172,7 @@ plot_smooth(EXT.gamm.1_T, view="AOP", rug=F, col="blue", add=T,
 cap <- sprintf("EXT values over time in Actual and Target data, weighted according to accumulative vocabulary size. Red line represents Actual values, blue line represents Target values; coloured bands represent 95%% CIs. Both smooths are shown here for exploratory purposes.")
 ```
 
-Outputs from model comparisons are shown in Table \@ref(tab:table-GAMM-outputs) (rows 1-2). Consistent with the interactions reported from the logistic regression models above, age had a significant effect on INT values in both Actual and Target data. However, the EXT x Age interaction shown in the regression models was not supported. Model smooths for both INT and EXT are plotted in Figures \@ref(fig:figure-GAMM-INT) and \@ref(fig:figure-GAMM-EXT); these plots show clear linear changes in INT values over time, for both Actual and Target data. In support of the findings above, and contrary to the expectations set out in H2, in the Actual data (shown in red in Figure \@ref(fig:figure-GAMM-INT)), INT values were lower in earlier acquisition, and increased over time. Furthermore, the trajectory is identical for the Target data (shown in blue), which contrasts with the regression model outputs above. Again as suggested above, the trajectory for EXT is negative, such that higher EXT values occur at earlier age points.
+Outputs from model comparisons are shown in Table \@ref(tab:table-GAMM-outputs) (rows 1-2). While interactions reported from the logistic regression models above were non-significant, age had a significant effect on INT values in both Actual and Target data in these models, while the EXT x Age interaction remained non-significant. While results from model comparisons are to be treated with caution for GAMMs, model smooths for INT (\@ref(fig:figure-GAMM-INT)) show a convincing linear change in INT values with age. Consistent with the regression model coefficients above, and contrary to the expectations set out in H2, in both the Actual and Target data, INT values were lower in earlier acquisition, and increased over time. Model smooths for the EXT values are shown in \@ref(fig:figure-GAMM-EXT) for comparison purposes.
 
 ### Data type comparisons
 
@@ -1104,7 +1193,7 @@ cap <- sprintf("Difference smooth plot showing difference between scaled INT val
 the difference between Actual and Target forms was significant.")
 ```
 
-The difference of the two smooths is shown in Figure \@ref(fig:difference-smooth-data-type). The red line indicates periods where the two trajectories differed significantly from one another - from 15 months until the final time-point in the analysis. For clarity, the two smooths are visualised in Figure \@ref(fig:plotted-smooth-data-type) where the difference between the two trajectories is clear.
+The difference of the two smooths is shown in Figure \@ref(fig:difference-smooth-data-type). The red line indicates periods where the two trajectories differed significantly from one another - from ~15 months until the final time-point in the analysis. For clarity, the two smooths are visualised in Figure \@ref(fig:plotted-smooth-data-type) where the difference between the two trajectories is clear.
 
 ```{r plotted-smooth-data-type, echo=FALSE, fig.cap=cap, fig.pos='H', message=FALSE, warning=FALSE,results='hide',fig.keep='all'}
 
