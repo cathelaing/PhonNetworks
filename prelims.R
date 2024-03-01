@@ -26,6 +26,7 @@ source("gamm_hacks.r")
 library(broom.mixed)
 library(car)
 #library(sjPlot)
+library(fixest)
 
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
   library(grid)
