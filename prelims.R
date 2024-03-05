@@ -27,6 +27,7 @@ library(broom.mixed)
 library(car)
 #library(sjPlot)
 library(fixest)
+library(broom.mixed)
 
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
   library(grid)

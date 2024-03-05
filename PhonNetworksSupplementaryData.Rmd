@@ -7,6 +7,7 @@ header-includes:
 - \usepackage{newunicodechar}
 - \newunicodechar{Σ}{\ensuremath{\sum}}
 - \newunicodechar{√}{\ensuremath{\sqrt}}
+bibliography: Systematicity.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -43,10 +44,16 @@ globalthresholds_corr <- read_csv("Data/globalthresholds_corr.csv") %>%
 all_distances <- read_csv("Data/all_distances.csv")
 
 data_CG <- read_feather("Data/regression_data_CG.feather")
-globalthresholds_AOP_CG <- read_feather("Data/globalthresholds_AOP_CG.feather") %>% filter(threshold == 0.25)
+#globalthresholds_AOP_CG <- read_feather("Data/globalthresholds_AOP_CG.feather") %>% filter(threshold == 0.25)
+
+globalthresholds_AOP_thresholdstest <- feather::read_feather("Data/globalthresholds_AOP_thresholdstest.feather")
+regression_data_lyon_thresholdstest <- feather::read_feather("ignore/large_files/regression_data_lyon_thresholdstest.feather")
+regression_data_providence_thresholdstest <- feather::read_feather("ignore/large_files/regression_data_providence_thresholdstest.feather")
+regression_data_thresholdstest <- rbind(regression_data_lyon_thresholdstest, regression_data_providence_thresholdstest) %>%
+  mutate(threshold = as.numeric(threshold)) %>% ungroup()
 
 # source("PhonologicalNetworks-Figures.R")
-# source("PhonologicalNetworks-Tables.R")
+source("PhonologicalNetworks-Tables-SI.R")
 
 stat_sum_df <- function(fun, geom="crossbar", ...) {
   stat_summary(fun.data=fun, colour="red", geom=geom, width=0.2, ...)
@@ -59,7 +66,7 @@ rename_vars <- c(
 
 ```
 
-```{r Figures for SI}
+```{r Figures for SI, include=FALSE}
 
 thresholds_corr <- ggplot(subset(globalthresholds_corr, !is.na(estimate)), 
        aes(x = threshold, y = as.numeric(estimate), colour = corpus, shape = significant)) +
@@ -70,14 +77,14 @@ thresholds_corr <- ggplot(subset(globalthresholds_corr, !is.na(estimate)),
   guides(color=guide_legend(""), shape = "none") +
   theme_bw() +
   geom_vline(xintercept = 0.25, linetype = "twodash", colour = "darkgrey") +
-  facet_wrap(~data_type, ncol=2, labeller = as_labeller(rename_vars))
+  facet_wrap(~data_type, ncol=2)
 
-data_type_plot_bysubj <- ggplot(data = subset(regression_data, age == (AOP-1)), aes(x = age, y = PAT_scaled, colour = data_type)) +
+data_type_plot_bysubj <- ggplot(data = subset(regression_data, age == (AOP-1)), aes(x = age, y = INT_scaled, colour = data_type)) +
   geom_point(shape = 21, position = position_jitter(.1)) +
   geom_smooth(aes(fill = data_type)) +
   ylab("INT value (normalised)") +
   xlab("Age (months)") +
-  ggtitle("Figure 4") +
+  ggtitle("Figure S4") +
   theme_bw(base_size = 18) +
   theme(legend.title = element_blank()) +
   facet_wrap(~Speaker, ncol=3)
@@ -133,23 +140,21 @@ phon.dist.table.final <- phon.dist.table %>% dplyr::select(word_pos,
                                                            consonant.x, features.x,
                                                            consonant.y, features.y, sum_sq_diffs_balloon,
                                                            consonant, features, sum_sq_diffs_sky) %>%
-  mutate(new_col = "Phonological distance ($sum$ $sqrt$ (sum squared differences)")
-  # mutate(word_pos = fct_recode(word_pos,
-  #                             "Phonological distance ($sum$ $sqrt$ (sum squared differences)" = "S1C1"))
-  #                             #  "Phonological distance (Σ√(sum squared differences))"))
+  mutate(word_pos = fct_recode(word_pos,
+                               "S2CF" = "SFC1"))
 
 ```
 
 ```{r table-model-outputs, echo=FALSE, message=FALSE, warning=FALSE}
-cap="ADD"
+cap="Table showing how phonological distance was calculated across the dataset. Here distance is calculated between *baby* and both *balloon* and *sky*; note that only consonants were included in the phonological distance measure. Word position relates to each consonant's position in the word; features shows values of the 11 distinctive features that were used to generate distance values between each pair of words; sum squared differences shows the difference in values between *baby* and *balloon*/*sky* respectively. The phonological distance of each word pair is shown on the bottom row."
 kable(phon.dist.table.final, "latex", booktabs=T, longtable=T, caption=cap, digits = 2, align="c", escape = F,
-      col.names=c("Word position", 
+      col.names=c("Word position[note]", 
                   "Consonant", "Features", 
                   "Consonant", "Features", "Sum squared differences", 
                   "Consonant", "Features", "Sum squared differences")) %>%
-    kable_styling()%>%
-  add_header_above(c(" "=1, col_baby=2, col_balloon=3, col_sky=3)) #%>%
-  #row_spec(4, hline_after=T)
+   kable_styling()%>%
+   add_header_above(c(" "=1, col_baby=2, col_balloon=3, col_sky=3)) %>%
+   add_footnote("S1 = first syllable, S2 = second syllable; C1 = first consonant, C2 = second consonant, CF = final consonant.", notation="alphabet")
 ```
 
 ### S2: Establishing connectivity within the networks
@@ -182,22 +187,39 @@ cap = "Density plot showing distribution of scaled phonological distance between
 knitr::include_graphics("Images/distance_density_plot.png")
 ```
 
-2) Taking this into account, as reported in the main paper, a value one SD below the mean was accepted to be a suitable threshold for connectivity in the dataset. A threshold of ε=0.25 sits at the upper end of the lowest quartile for each of the four datasets (French and English, each with Actual and Target data; range = `r round(min(subset(all_distances, corpus != "all")$Q1),2)`-`r round(max(subset(all_distances, corpus != "all")$Q1),2)`). To verify this value, the data was re-analysed at a series of additional thresholds, representing the lower and upper limits of the analysable range discussed above (ε=0.15-0.5), as well as each of the lowest quartile values for the four individual datasets.
+2) Taking this into account, as reported in the main paper, a value one SD below the mean was accepted to be a suitable threshold for connectivity in the dataset. A threshold of ε=0.25 sits at the upper end of the lowest quartile for each of the four datasets (French and English, each with Actual and Target data; range = `r round(min(subset(all_distances, corpus != "all")$Q1),2)`-`r round(max(subset(all_distances, corpus != "all")$Q1),2)`). 
 
-[REPORT RESULTS HERE!]
+To further explore the extent to which the results are dependent on this threshold value, the data was re-analysed at a series of additional thresholds, representing the lower and upper limits of the analysable range discussed above (ε=0.15-0.5), as well as each of the lowest quartile values for the four individual datasets and the overall mean connectivity in the data (ε=`r round((subset(all_distances, corpus == "all")$mean_dist),2)`). The full dataset was regenerated seven times with each of these seven thresholds as a cut-off for connectivity (i.e. two nodes in the network were said to be connected at a threshold of ε=<*n*, where *n* is the threshold being tested) and both the AoP~degree correlations and the full GLMER models were run for both Actual and Target data, as in the main paper. Results are shown in Tables \@ref(tab:table-thresholdtest-actual) and \@ref(tab:table-thresholdtest-target).
+
+``` {r table-thresholdtest-actual, comment=F, message=F, warning = F, echo = F, results = "asis"}
+cap = "ADD"
+
+kable(actual.thresholdstest, "latex", booktabs=T, longtable=T, caption=cap, digits=2, align="c",
+    col.names=c("Threshold", "Unconnected words", "Spearman's rho", "Estimate", "p", "95% CI", "Estimate", "p", "95% CI")) %>%
+    kable_styling()%>%
+  add_header_above(c(" "=3, "INT"=3, "EXT"=3))
+```
+
+``` {r table-thresholdtest-target, comment=F, message=F, warning = F, echo = F, results = "asis"}
+cap = "ADD"
+
+kable(target.thresholdstest, "latex", booktabs=T, longtable=T, caption=cap, digits=2, align="c",
+    col.names=c("Threshold", "Unconnected words", "Spearman's rho", "Estimate", "p", "95% CI", "Estimate", "p", "95% CI")) %>%
+    kable_styling()%>%
+  add_header_above(c(" "=3, "INT"=3, "EXT"=3))
+```
 
 ### S3: Age of production (AoP) ~ connectivity
-
-
 
 ``` {r table-aop-deg-corr, comment=F, message=F, warning = F, echo = F, results = "asis"}
 cap = "Outputs (rho and p values) of AoP-degree Spearman's correlation tests for each infant in the dataset."
 
 kable(table.aop.deg.corr.speaker, "latex", booktabs=T, longtable=T, 
-      caption=cap, digits=2, align="c")
+      caption=cap, digits=2, align="c",
+          col.names=c("Speaker", "Corpus", "Spearman's rho", "p", "Spearman's rho", "p")) %>%
+    kable_styling()%>%
+  add_header_above(c(" "=2, "Actual"=2, "Target"=2)))
 ```
-
-
 
 ```{r Figure-AOP-deg-corr, echo=FALSE, fig.pos='H', message=FALSE, warning=FALSE}
 
@@ -345,41 +367,12 @@ knitr::kable(table.model.summary.full, "latex", booktabs=T, longtable=T, caption
 
 ### S4: By-speaker comparisons
 
-Between-child differences are well established in the phonological development literature [REF]. There is thus reason to expect that the nine infants in the current dataset may have differential paths to word production, and so results may be variable when considered across speakers. Figure \@ref(fig:by-speaker-data) below shows a by-infant breakdown of the INT value trajectories visualised in Figure 4 of the main paper. Here there is clear indication that INT-like network growth differs as a feature of early word production across infants. Descriptively, in Anais, Nathan and Alex's data, INT values appear to increase exponentially over time, suggesting that INT is an increasingly influential factor in their early production. On the other hand, INT values plateau relatively early in the data for William, Naima and Lily, suggesting that other factors may have a stronger influence in these infants’ word production and acquisition after a certain time-point.
+Between-child differences are well established in the phonological development literature [@maekawa_individual_2006; @vihman_phonological_1986]. There is thus reason to expect that the nine infants in the current dataset may have differential paths to word production, and so results may be variable when considered across speakers. Figure \@ref(fig:by-speaker-data) below shows a by-infant breakdown of the INT value trajectories visualised in Figure 4 of the main paper. Descriptively, in Anais, Nathan and Alex's data, INT values increase exponentially over time, suggesting that INT is an increasingly influential factor in their early production. On the other hand, INT values plateau relatively early in the data for William, Naima and Lily, suggesting that other factors may have a stronger influence in these infants’ word production and acquisition after a certain time-point.
 
 ```{r by-speaker-data, cap = cap}
 cap="Smooth plot showing scaled INT values in Actual vs. Target forms. Shaded areas show 95%% confidence intervals, lines indicate mean trajectories over time, coloured circles represent individual datapoints, jittered for visual clarity. Plot is faceted by infant for comparison across subjects."
 data_type_plot_bysubj
 ```
-
-[REMOVE THIS NEXT BIT I THINK?]
-
-To test this statistically, the models from the main paper were re-run, but with Speaker included as a fixed, rather than a random, effect. Since only INT was found to improve model fit, the models including INT, but not EXT, were run as simple logistic regression models, with a Speaker*age interaction as a fixed effect, rather than a by-age random effect.
-
-```{r logit models}
-
-# change reference Speaker since Anais is the only infant without an AOP~degree correlation, so she is not 
-# a good choice for reference Speaker
-
-# Naima has strongest correlation
-
-reg_dat$Speaker <- relevel(reg_dat$Speaker, ref=7)
-levels(reg_dat$Speaker)
-
-model1_A_lm <- lm(PAT_scaled ~
-                  length_scaled*age_scaled +
-                   tokens_scaled*age_scaled +
-                   freq_scaled*age_scaled +
-                   vocab_scaled*age_scaled +
-                   Speaker*age_scaled +
-                   category,
-                    data=subset(reg_dat, data_type == "actual"))
-
-check <- tidy(model1_A_lm)
-
-```
-
-The full model was tested against a full model without the effect of Speaker (and associated by-age interaction), and model comparisons showed the effect of Speaker to significantly improve model fit [STATS]. Inspection of model estimates shows variability between infants in the log-odds of word learning: with Naima as the reference group (selected owing to her AoP~degree correlation being the strongest in the data; see S3, though note that she also has the biggest vocabulary of all infants), all infants but William were significantly less likely to learn a given word in any given month.
 
 ### S5: Random network analysis
 
