@@ -10,14 +10,14 @@
 
 \centering
 \includegraphics{PhonNetworksProj-revised_files/figure-latex/figure-GAMM-INT-1.pdf}
-\caption{\label{fig:figure-GAMM-INT}INT values over time in Actual and Target data, weighted according to accumulative vocabulary size. Dark line represents Actual values, light line represents Target values; coloured bands represent 95\% CIs.}
+\caption{\label{fig:figure-GAMM-INT}INT values over time in Actual and Target data, weighted according to accumulative vocabulary size. Red filled line represents Actual values, blue dashed line represents Target values; coloured bands represent 95\% CIs.}
 \end{figure*}
 \begin{figure*}[hbt]
 \ifnextchar[{\eatarg}{}
 
 \centering
 \includegraphics{PhonNetworksProj-revised_files/figure-latex/figure-GAMM-EXT-1.pdf}
-\caption{\label{fig:figure-GAMM-EXT}EXT values over time in Actual and Target data, weighted according to accumulative vocabulary size. Dark line represents Actual values, light line represents Target values; coloured bands represent 95\% CIs. Both smooths are shown here for exploratory purposes.}
+\caption{\label{fig:figure-GAMM-EXT}EXT values over time in Actual and Target data, weighted according to accumulative vocabulary size. Red filled line represents Actual values, blue dashed line represents Target values; coloured bands represent 95\% CIs. Both smooths are shown here for exploratory purposes.}
 \end{figure*}
 \begin{figure*}[hbt]
 \ifnextchar[{\eatarg}{}

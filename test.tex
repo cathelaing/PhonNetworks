@@ -1,0 +1,245 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  man]{apa6}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+\babelprovide[main,import]{english}
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+% Manuscript styling
+\usepackage{upgreek}
+\captionsetup{font=singlespacing,justification=justified}
+
+% Table formatting
+\usepackage{longtable}
+\usepackage{lscape}
+% \usepackage[counterclockwise]{rotating}   % Landscape page setup for large tables
+\usepackage{multirow}		% Table styling
+\usepackage{tabularx}		% Control Column width
+\usepackage[flushleft]{threeparttable}	% Allows for three part tables with a specified notes section
+\usepackage{threeparttablex}            % Lets threeparttable work with longtable
+
+% Create new environments so endfloat can handle them
+% \newenvironment{ltable}
+%   {\begin{landscape}\centering\begin{threeparttable}}
+%   {\end{threeparttable}\end{landscape}}
+\newenvironment{lltable}{\begin{landscape}\centering\begin{ThreePartTable}}{\end{ThreePartTable}\end{landscape}}
+
+% Enables adjusting longtable caption width to table width
+% Solution found at http://golatex.de/longtable-mit-caption-so-breit-wie-die-tabelle-t15767.html
+\makeatletter
+\newcommand\LastLTentrywidth{1em}
+\newlength\longtablewidth
+\setlength{\longtablewidth}{1in}
+\newcommand{\getlongtablewidth}{\begingroup \ifcsname LT@\roman{LT@tables}\endcsname \global\longtablewidth=0pt \renewcommand{\LT@entry}[2]{\global\advance\longtablewidth by ##2\relax\gdef\LastLTentrywidth{##2}}\@nameuse{LT@\roman{LT@tables}} \fi \endgroup}
+
+% \setlength{\parindent}{0.5in}
+% \setlength{\parskip}{0pt plus 0pt minus 0pt}
+
+% Overwrite redefinition of paragraph and subparagraph by the default LaTeX template
+% See https://github.com/crsh/papaja/issues/292
+\makeatletter
+\renewcommand{\paragraph}{\@startsection{paragraph}{4}{\parindent}%
+  {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+  {-1em}%
+  {\normalfont\normalsize\bfseries\itshape\typesectitle}}
+
+\renewcommand{\subparagraph}[1]{\@startsection{subparagraph}{5}{1em}%
+  {0\baselineskip \@plus 0.2ex \@minus 0.2ex}%
+  {-\z@\relax}%
+  {\normalfont\normalsize\itshape\hspace{\parindent}{#1}\textit{\addperi}}{\relax}}
+\makeatother
+
+\makeatletter
+\usepackage{etoolbox}
+\patchcmd{\maketitle}
+  {\section{\normalfont\normalsize\abstractname}}
+  {\section*{\normalfont\normalsize\abstractname}}
+  {}{\typeout{Failed to patch abstract.}}
+\patchcmd{\maketitle}
+  {\section{\protect\normalfont{\@title}}}
+  {\section*{\protect\normalfont{\@title}}}
+  {}{\typeout{Failed to patch title.}}
+\makeatother
+
+\usepackage{xpatch}
+\makeatletter
+\xapptocmd\appendix
+  {\xapptocmd\section
+    {\addcontentsline{toc}{section}{\appendixname\ifoneappendix\else~\theappendix\fi\\: #1}}
+    {}{\InnerPatchFailed}%
+  }
+{}{\PatchFailed}
+\keywords{systematicity, phonological development, preferential attachment, networks analysis}
+\DeclareDelayedFloatFlavor{ThreePartTable}{table}
+\DeclareDelayedFloatFlavor{lltable}{table}
+\DeclareDelayedFloatFlavor*{longtable}{table}
+\makeatletter
+\renewcommand{\efloat@iwrite}[1]{\immediate\expandafter\protected@write\csname efloat@post#1\endcsname{}}
+\makeatother
+\usepackage{csquotes}
+\usepackage[titles]{tocloft}
+\cftpagenumbersoff{figure}
+\renewcommand{\cftfigpresnum}{\itshape\figurename\enspace}
+\renewcommand{\cftfigaftersnum}{.\space}
+\setlength{\cftfigindent}{0pt}
+\setlength{\cftafterloftitleskip}{0pt}
+\settowidth{\cftfignumwidth}{Figure 10.\qquad}
+\DeclareDelayedFloatFlavor{kableExtra}{table}
+\usepackage{tipa}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Phonological Networks and Systematicity in Early Lexical Acquisition},
+  pdfauthor={Catherine E. Laing1},
+  pdflang={en-EN},
+  pdfkeywords={systematicity, phonological development, preferential attachment, networks analysis},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Phonological Networks and Systematicity in Early Lexical Acquisition}
+\author{Catherine E. Laing\textsuperscript{1}}
+\date{}
+
+
+\shorttitle{Systematicity in early phonological development}
+
+\authornote{
+
+All code and associated data for this manuscript can be found on the project's OSF page at \url{https://osf.io/uzrsy/?view_only=340858d2084245d087fc00fcca41b679}. This study was not pre-registered.
+
+Correspondence concerning this article should be addressed to Catherine E. Laing, Department of Language and Linguistic Science, University of York, Heslington, YO10 5DD. E-mail: \href{mailto:catherine.laing@york.ac.uk}{\nolinkurl{catherine.laing@york.ac.uk}}
+
+}
+
+\affiliation{\vspace{0.5cm}\textsuperscript{1} University of York, York, UK}
+
+\abstract{%
+Infants' early words tend to be phonologically similar. This may reflect a systematic approach to early production, as they adapt newly-acquired forms to fit familiar structures in the output. This `rich-get-richer' approach to phonological acquisition, known as \emph{preferential attachment} in network science, proposes that new words cluster together with existing phonologically-similar words in the lexicon (or network). This contrasts with recent work (e.g.~Fourtassi et al., 2020) showing that the learning environment is the key predictor in learning (\emph{preferential acquisition}). This study expands on previous analyses of vocabulary norm data to analyse naturalistic data, namely phonetic transcriptions of nine infants' word productions, from word onset to age 2;6. Network growth models test whether 1) acquisition is best modeled through preferential attachment or preferential acquisition, 2) the trajectory of network growth changes over time, and 3) there are any differences in network growth of adult target forms vs.~infants' actual productions. Results show that preferential attachment predicts acquisition of new words more convincingly than preferential acquisition: newly-acquired words are phonologically similar to existing words in the network. Furthermore, systematicity becomes increasingly apparent over the course of acquisition, and infants produce their early words more systematically than we would expect from looking at target forms alone.
+}
+
+
+
+\begin{document}
+\maketitle
+
+\begin{longtable}[t]{ccccccc}
+\caption{\label{tab:table-model-outputs}Outputs from nested model comparisons comparing logistic regression models predicting acquisition of words in each month according to INT- and EXT-like growth structures.}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{3}{c}{Actual} & \multicolumn{3}{c}{Target} \\
+\cmidrule(l{3pt}r{3pt}){2-4} \cmidrule(l{3pt}r{3pt}){5-7}
+Model & Df & Chi Sq & p & Df & Chi Sq & p\\
+\midrule
+null vs. INT & 2 & 395.48 & <0.001 & 2 & 84.18 & <0.001\\
+null vs. EXT & 2 & 1.00 & 0.608 & 2 & 2.87 & 0.238\\
+INT vs. INT+EXT & 2 & 0.35 & 0.841 & 2 & 0.33 & 0.848\\
+EXT vs. INT+EXT & 2 & 394.83 & <0.001 & 2 & 81.64 & <0.001\\
+\midrule
+\bottomrule
+\end{longtable}
+
+\begin{table}
+
+\caption{\label{tab:table-data-summary}Results from maximal logistic regression model (model 3) testing the effects of network growth values, corpus (English as baseline), input frequency, comprehensive AoA, word category and word length to predict word acquisition. All variables were scaled and centred. Category has been removed for ease of interpretation but this is shown in the full model output in S4.}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{ccccccccccc}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{5}{c}{Actual} & \multicolumn{5}{c}{Target} \\
+\cmidrule(l{3pt}r{3pt}){2-6} \cmidrule(l{3pt}r{3pt}){7-11}
+Effect & beta & SE & z & p & 95\% CI & beta & SE & z & p & 95\% CI\\
+\midrule
+Intercept & -3.28 & 0.27 & -12.25 & <0.001 & {}[-3.81,-2.76] & -2.96 & 0.38 & -7.79 & <0.001 & {}[-3.71,-2.22]\\
+INT value & 0.88 & 0.07 & 12.59 & <0.001 & {}[0.74,1.02] & 0.47 & 0.06 & 8.08 & <0.001 & {}[0.35,0.58]\\
+EXT value & 0.01 & 0.05 & 0.27 & 0.787 & {}[-0.09,0.11] & 0.00 & 0.05 & 0.04 & 0.964 & {}[-0.1,0.1]\\
+Age & 0.94 & 0.14 & 6.66 & <0.001 & {}[0.66,1.21] & 1.25 & 0.13 & 9.77 & <0.001 & {}[1,1.5]\\
+AoA & -0.23 & 0.04 & -6.22 & <0.001 & {}[-0.3,-0.15] & -0.21 & 0.04 & -5.79 & <0.001 & {}[-0.29,-0.14]\\
+\addlinespace
+Length & -0.08 & 0.06 & -1.46 & 0.144 & {}[-0.2,0.03] & -0.14 & 0.06 & -2.32 & 0.021 & {}[-0.25,-0.02]\\
+Input freq & 0.17 & 0.05 & 3.30 & 0.001 & {}[0.07,0.27] & 0.19 & 0.05 & 3.71 & <0.001 & {}[0.09,0.29]\\
+Corpus & 0.43 & 0.31 & 1.37 & 0.172 & {}[-0.18,1.03] & 0.93 & 0.47 & 1.99 & 0.047 & {}[0.01,1.84]\\
+Age x INT & 0.16 & 0.05 & 2.96 & 0.003 & {}[0.05,0.27] & -0.07 & 0.04 & -1.62 & 0.106 & {}[-0.16,0.01]\\
+Age x EXT & -0.03 & 0.04 & -0.58 & 0.561 & {}[-0.11,0.06] & -0.03 & 0.05 & -0.56 & 0.575 & {}[-0.12,0.06]\\
+\addlinespace
+Age x AoA & 0.12 & 0.03 & 3.97 & <0.001 & {}[0.06,0.17] & 0.10 & 0.03 & 3.28 & 0.001 & {}[0.04,0.16]\\
+Age x Length & 0.03 & 0.05 & 0.72 & 0.474 & {}[-0.06,0.13] & 0.01 & 0.05 & 0.22 & 0.825 & {}[-0.09,0.11]\\
+Age x Input freq & -0.06 & 0.03 & -1.90 & 0.057 & {}[-0.12,0] & -0.06 & 0.03 & -1.92 & 0.055 & {}[-0.13,0]\\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+
+\clearpage
+\renewcommand{\listfigurename}{Figure captions}
+
+
+\end{document}

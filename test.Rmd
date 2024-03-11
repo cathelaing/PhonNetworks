@@ -1,0 +1,442 @@
+---
+title: "Phonological Networks and Systematicity in Early Lexical Acquisition"
+author:
+- name: Catherine E. Laing
+  affiliation: '1'
+  corresponding: yes
+  address: Department of Language and Linguistic Science, University of York, Heslington, YO10 5DD
+  email: catherine.laing@york.ac.uk
+authornote: |
+ All code and associated data for this manuscript can be found on the project’s OSF page at https://osf.io/uzrsy/?view_only=340858d2084245d087fc00fcca41b679.  This study was not pre-registered.
+shorttitle: Systematicity in early phonological development
+output:
+  papaja::apa6_pdf: default
+abstract: "Infants' early words tend to be phonologically similar. This may reflect a systematic approach to early production, as they adapt newly-acquired forms to fit familiar structures in the output. This 'rich-get-richer' approach to phonological acquisition, known as *preferential attachment* in network science, proposes that new words cluster together with existing phonologically-similar words in the lexicon (or network). This contrasts with recent work (e.g. Fourtassi et al., 2020) showing that the learning environment is the key predictor in learning (*preferential acquisition*). This study expands on previous analyses of vocabulary norm data to analyse naturalistic data, namely phonetic transcriptions of nine infants' word productions, from word onset to age 2;6. Network growth models test whether 1) acquisition is best modeled through preferential attachment or preferential acquisition, 2) the trajectory of network growth changes over time, and 3) there are any differences in network growth of adult target forms vs. infants' actual productions. Results show that preferential attachment predicts acquisition of new words more convincingly than preferential acquisition: newly-acquired words are phonologically similar to existing words in the network. Furthermore, systematicity becomes increasingly apparent over the course of acquisition, and infants produce their early words more systematically than we would expect from looking at target forms alone."
+keywords: systematicity, phonological development, preferential attachment, networks analysis
+#wordcount: "" 
+bibliography: Systematicity.bib
+#floatsintext: yes
+figsintext: no
+figurelist: yes
+tablelist: no
+footnotelist: no
+linenumbers: no
+numbersections: false
+mask: no
+draft: no
+documentclass: apa6
+header-includes:
+-  \DeclareDelayedFloatFlavor{kableExtra}{table}
+- \usepackage{tipa}
+classoption: man
+affiliation:
+- id: '1'
+  institution: University of York, York, UK
+latex_engine: xelatex
+---
+
+```{r setup, include=FALSE}
+
+source("prelims.R")
+r_refs(file="r-references.bib")
+
+
+my_citations <- cite_r(
+  file="r-references.bib"
+  , pkgs=c("tidyverse", "igraph", "papaja", "lmerTest")
+  , withhold=FALSE
+  , footnote=TRUE
+)
+
+# load files
+
+regression_data_lyon <- feather::read_feather("Data/regression_data_lyon.feather")
+regression_data_providence <- feather::read_feather("Data/regression_data_providence.feather")
+regression_data <- rbind(regression_data_lyon, regression_data_providence) %>% 
+  group_by(Speaker, age) %>% 
+  mutate(INT_z = scale(INT_val),
+         EXT_z = scale(EXT_target)) %>% ungroup()
+
+globalthresholds_AOP <- feather::read_feather("Data/globalthresholds_AOP.feather")
+full_thresholds <- feather::read_feather("Data/full_thresholds.feather")
+
+comparison_data_P <- read_csv("Data/comparison_data_providence.csv")                                                            
+comparison_data_L <- read_csv("Data/comparison_data_lyon.csv")
+comparison_data <- rbind(comparison_data_P, comparison_data_L)
+
+globalthresholds_AOP_rand <- read_feather("Data/globalthresholds_AOP_rand.feather") %>% filter(threshold == 0.25 & data_type == "target")
+
+FULLsample <- read_csv("Data/FULLsample.csv")
+
+all_distances <- read_csv("Data/all_distances.csv")
+
+#source("PhonologicalNetworks-Figures.R")
+source("PhonologicalNetworks-Tables.R")
+
+stat_sum_df <- function(fun, geom="crossbar", ...) {
+  stat_summary(fun.data=fun, colour="red", geom=geom, width=0.2, ...)
+}
+
+```
+
+
+```{r regression model actual, message=FALSE, warning=FALSE, include=FALSE}
+
+reg_dat <- regression_data[which(complete.cases(regression_data[,c('EXT_scaled_target',
+                                                                   'INT_scaled',
+                                                                   'INT_z',
+                                                                   'EXT_z',
+                                                                   'length_scaled',
+                                                                   'freq_scaled',
+                                                                   'aoa_scaled',
+                                                                   'age_scaled',
+                                                                   'tokens_scaled',
+                                                                   'corpus',
+                                                                   'AOP',
+                                                                   'category')])),]
+
+# check for multicollinearity with all potential variables included in the null model:
+
+# model_null <- glmer(learned_next ~
+#                     age_scaled +
+#                     length_scaled +
+#                     #tokens_scaled +
+#                     freq_scaled +
+#                     #vocab_scaled +
+#                     aoa_scaled +
+#                     corpus +
+#                     #category +
+#                     (1+age_scaled|Speaker),
+#                     family=binomial("logit"),
+#                     control=glmerControl(calc.derivs=FALSE,
+#                                          optimizer="bobyqa",
+#                                            # specifiying optimizer to support convergence
+#                                            #(does not converge without this)
+#                                          optCtrl=list(maxfun=2e5)),
+#                     data=subset(reg_dat, data_type == "actual"))
+#
+# model_added <- glmer(learned_next ~
+#                       age_scaled +
+#                     length_scaled +
+#                     #tokens_scaled +
+#                     freq_scaled +
+#                     #vocab_scaled +
+#                     aoa_scaled +
+#                     corpus +
+#                     category +
+#                     (1+age_scaled|Speaker),
+#                     family=binomial("logit"),
+#                     control=glmerControl(calc.derivs=FALSE,
+#                                          optimizer="bobyqa",
+#                                            # specifiying optimizer to support convergence
+#                                            #(does not converge without this)
+#                                          optCtrl=list(maxfun=2e5)),
+#                     data=subset(reg_dat, data_type == "actual"))
+#
+# anova(model_null, model_added)
+#
+# vif(model_added)
+
+
+model0_A <- glmer(learned_next ~
+                    length_scaled*age_scaled +
+                    freq_scaled*age_scaled +
+                    aoa_scaled*age_scaled +
+                    corpus +
+                    category +
+                    (1+age_scaled|Speaker),
+                    family=binomial("logit"),
+                    control=glmerControl(calc.derivs=FALSE,
+                                         optimizer="bobyqa",
+                                           # specifiying optimizer to support convergence
+                                           #(does not converge without this)
+                                         optCtrl=list(maxfun=2e5)),
+                    data=subset(reg_dat, data_type == "actual"))
+
+# summary(model0_A)
+
+model1_A <- glmer(learned_next ~
+                    INT_z*age_scaled +
+                    length_scaled*age_scaled +
+                    freq_scaled*age_scaled +
+                    aoa_scaled*age_scaled +
+                    corpus +
+                    category +
+                    (1+age_scaled|Speaker),
+                    family=binomial("logit"),
+                    control=glmerControl(calc.derivs=FALSE,
+                                         optimizer="bobyqa",
+                                         optCtrl=list(maxfun=2e5)),
+                    data=subset(reg_dat, data_type == "actual"))
+
+
+models01_A <- anova(model0_A, model1_A)
+
+model2_A <- glmer(learned_next ~
+                    EXT_z*age_scaled +
+                    length_scaled*age_scaled +
+                    freq_scaled*age_scaled +
+                    aoa_scaled*age_scaled +
+                    corpus +
+                    category +
+                    (1+age_scaled|Speaker),
+                    family=binomial("logit"),
+                    control=glmerControl(calc.derivs=FALSE,
+                                         optimizer="bobyqa",
+                                         optCtrl=list(maxfun=2e5)),
+                    data=subset(reg_dat, data_type == "actual"))
+
+models02_A <- anova(model0_A, model2_A)
+
+model3_A <- glmer(learned_next ~
+                    INT_z*age_scaled +
+                    EXT_z*age_scaled +
+                    length_scaled*age_scaled +
+                    freq_scaled*age_scaled +
+                    aoa_scaled*age_scaled +
+                    corpus +
+                    category +
+                    (1+age_scaled|Speaker),
+                    family=binomial("logit"),
+                    control=glmerControl(calc.derivs=FALSE,
+                                         optimizer="bobyqa",
+                                         optCtrl=list(maxfun=2e5)),
+                    data=subset(reg_dat, data_type == "actual"))
+
+models13_A <- anova(model1_A, model3_A)
+models23_A <- anova(model2_A, model3_A)
+
+confint.model3_A <- tidy(model3_A,effects="fixed",conf.int=TRUE) %>%
+  select(term, conf.low, conf.high) %>%
+  mutate(across(where(is.numeric), round, 2)) %>%
+  unite(`95% CI`, c(conf.low, conf.high), sep = ",",)
+
+confint.model3_A$`95% CI` <- paste0("[", confint.model3_A$`95% CI`, "]")
+
+#summary(model3_A)
+
+table.A.model.output <- rbind(models01_A, models02_A, models13_A, models23_A) %>%
+  rownames_to_column(var="Model") %>%
+  filter(Chisq > 0) %>%
+  rename("p"=`Pr(>Chisq)`) %>%
+  mutate(Model=fct_recode(Model,
+                           "null vs. INT"="model1_A",
+                            "null vs. EXT"="model2_A",
+                            "INT vs. INT+EXT"="model3_A",
+                            "EXT vs. INT+EXT"="model3_A1"),
+             p=scales::pvalue(p)
+        ) %>%
+  select(Model, `Df`, `Chisq`, `p`)
+
+model.summary_A <- summary(model3_A)
+
+model3_A_tab <- model.summary_A$coefficients %>%
+  as.data.frame %>%
+  rename(
+    "b"="Estimate"
+     , "SE"="Std. Error"
+     , "z"="z value"
+     , "p"="Pr(>|z|)") %>%
+  mutate(
+    Effect=papaja:::beautify_terms(rownames(.))
+  )
+
+table.model3_A <- model3_A_tab %>%
+  printnum(
+    digits=c(2, 2, 2, 3)
+    , gt1=c(TRUE, TRUE, TRUE, TRUE)
+    , zero=c(TRUE, TRUE, TRUE, TRUE)
+  ) %>%
+  rownames_to_column(var = "term") %>%
+  left_join(confint.model3_A) %>%
+  select(Effect, `b`, `SE`, `z`, `p`, `95% CI`) %>%
+  rename("beta"=`b`) %>%
+  mutate(beta=as.numeric(beta),
+        SE=as.numeric(SE),
+        `z`=as.numeric(`z`),
+        `p`=as.numeric(`p`),
+             p=scales::pvalue(p))
+```
+
+```{r regression model Target, message=FALSE, warning=FALSE, include=FALSE}
+
+model0_T <- glmer(learned_next ~
+                    length_scaled*age_scaled +
+                    freq_scaled*age_scaled +
+                    aoa_scaled*age_scaled +
+                    corpus +
+                    category +
+                    (1+age_scaled|Speaker),
+                    family=binomial("logit"),
+                    control=glmerControl(calc.derivs=FALSE,
+                                         optimizer="bobyqa",
+                                         optCtrl=list(maxfun=2e5)),
+                    data=subset(reg_dat, data_type == "target"))
+
+model1_T <- glmer(learned_next ~
+                    INT_z*age_scaled +
+                    length_scaled*age_scaled +
+                    freq_scaled*age_scaled +
+                    aoa_scaled*age_scaled +
+                    corpus +
+                    category +
+                    (1+age_scaled|Speaker),
+                    family=binomial("logit"),
+                    control=glmerControl(calc.derivs=FALSE,
+                                         optimizer="bobyqa",
+                                         optCtrl=list(maxfun=2e5)),
+                    data=subset(reg_dat, data_type == "target"))
+
+
+models01_T <- anova(model0_T, model1_T)
+
+model2_T <- glmer(learned_next ~
+                    EXT_z*age_scaled +
+                    length_scaled*age_scaled +
+                    freq_scaled*age_scaled +
+                    aoa_scaled*age_scaled +
+                    corpus +
+                    category +
+                    (1+age_scaled|Speaker),
+                    family=binomial("logit"),
+                    control=glmerControl(calc.derivs=FALSE,
+                                         optimizer="bobyqa",
+                                         optCtrl=list(maxfun=2e5)),
+                    data=subset(reg_dat, data_type == "target"))
+
+models02_T <- anova(model0_T, model2_T)
+
+model3_T <- glmer(learned_next ~
+                    INT_z*age_scaled +
+                    EXT_z*age_scaled +
+                    length_scaled*age_scaled +
+                    freq_scaled*age_scaled +
+                    aoa_scaled*age_scaled +
+                    corpus +
+                    category +
+                    (1+age_scaled|Speaker),
+                    family=binomial("logit"),
+                    control=glmerControl(calc.derivs=FALSE,
+                                         optimizer="bobyqa",
+                                         optCtrl=list(maxfun=2e5)),
+                    data=subset(reg_dat, data_type == "target"))
+
+models13_T <- anova(model1_T, model3_T)
+models23_T <- anova(model2_T, model3_T)
+
+confint.model3_T <- tidy(model3_T,effects="fixed",conf.int=TRUE) %>%
+  select(term, conf.low, conf.high) %>%
+  mutate(across(where(is.numeric), round, 2)) %>%
+  unite(`95% CI`, c(conf.low, conf.high), sep = ",",)
+
+confint.model3_T$`95% CI` <- paste0("[", confint.model3_T$`95% CI`, "]")
+
+table.T.model.output <- rbind(models01_T, models02_T, models13_T, models23_T) %>%
+  rownames_to_column(var="Model") %>%
+  filter(Chisq > 0) %>%
+  rename("p"=`Pr(>Chisq)`) %>%
+  mutate(Model=fct_recode(Model,
+                           "null vs. INT"="model1_T",
+                            "null vs. EXT"="model2_T",
+                            "INT vs. INT+EXT"="model3_T",
+                            "EXT vs. INT+EXT"="model3_T1"),
+             p=scales::pvalue(p)
+        ) %>%
+  select(Model, `Df`, `Chisq`, `p`)
+
+table.model.outputs <- cbind(table.A.model.output, table.T.model.output)
+table.model.outputs <- table.model.outputs[,-5]
+
+model.summary_T <- summary(model3_T)
+
+model3_T_tab <- model.summary_T$coefficients %>%
+  as.data.frame %>%
+  rename(
+    "b"="Estimate"
+     , "SE"="Std. Error"
+     , "z"="z value"
+     , "p"="Pr(>|z|)") %>%
+  mutate(
+    Effect=papaja:::beautify_terms(rownames(.))
+  )
+
+table.model3_T <- model3_T_tab %>%
+  printnum(
+    digits=c(2, 2, 2, 3)
+    , gt1=c(TRUE, TRUE, TRUE, TRUE)
+    , zero=c(TRUE, TRUE, TRUE, TRUE)
+  ) %>%
+  rownames_to_column(var = "term") %>%
+  left_join(confint.model3_T) %>%
+  select(Effect, `b`, `SE`, `z`, `p`, `95% CI`) %>%
+  rename("beta"=`b`) %>%
+  mutate(beta=as.numeric(beta),
+        SE=as.numeric(SE),
+        `z`=as.numeric(`z`),
+        `p`=as.numeric(`p`),
+             p=scales::pvalue(p))
+
+rownames(table.model3_T) <- NULL
+
+table.model.3 <- cbind(table.model3_A, table.model3_T)
+table.model.summary <- table.model.3[,-7]
+
+#table.model.summary$Effect
+
+table.model.summary <- table.model.summary %>% mutate(Effect=fct_recode(Effect,
+                                              `EXT value`="EXT z",
+                                              `INT value`="INT z",
+                                              Age="Age scaled",
+                                               AoA="Aoa scaled",
+                                               Length="Length scaled",
+                                              `Input freq`="Freq scaled",
+                                              `Corpus` = "CorpusEnglish",
+                                              `Age x AoA`="Age scaled $\\times$ Aoa scaled",
+                                              `Age x Length`="Age scaled $\\times$ Length scaled",
+                                              `Age x Input freq`="Age scaled $\\times$ Freq scaled",
+                                              `Age x EXT`="Age scaled $\\times$ EXT z",
+                                              `Age x INT`="INT z $\\times$ Age scaled"
+                                             )) %>%
+  filter(!(grepl("Category", Effect, ignore.case = TRUE)),
+         !(grepl("scaled", Effect, ignore.case = TRUE)))
+
+var_order <- c("Intercept", "INT value", "EXT value", "Age", "AoA", "Length", "Input freq", "Corpus",
+               "Age x INT",
+               "Age x EXT",
+               "Age x AoA",
+               "Age x Length",
+               "Age x Input freq")
+
+table.model.summary <- table.model.summary %>%
+          arrange(factor(Effect, levels = var_order))
+
+rownames(table.model.summary) <- NULL
+
+actual_beta_INT <- subset(model3_A_tab, Effect == "INT z")$b
+actual_beta_EXT <- subset(model3_A_tab, Effect == "EXT z")$b
+actual_p_INT <- subset(model3_A_tab, Effect == "INT z")$p
+actual_p_EXT <- subset(model3_A_tab, Effect == "EXT z")$p
+
+target_beta_INT <- subset(model3_T_tab, Effect == "INT z")$b
+target_beta_EXT <- subset(model3_T_tab, Effect == "EXT z")$b
+target_p_INT <- subset(model3_T_tab, Effect == "INT z")$p
+target_p_EXT <- subset(model3_T_tab, Effect == "EXT z")$p
+
+```
+
+```{r table-model-outputs, echo=FALSE, message=FALSE, warning=FALSE}
+cap="Outputs from nested model comparisons comparing logistic regression models predicting acquisition of words in each month according to INT- and EXT-like growth structures."
+kable(table.model.outputs, "latex", booktabs=T, longtable=T, caption=cap, digits=2, align="c",
+      col.names=c("Model", "Df", "Chi Sq", "p", "Df", "Chi Sq", "p")) %>%
+    kable_styling()%>%
+  add_header_above(c(" "=1, "Actual"=3, "Target"=3)) %>%
+  row_spec(4, hline_after=T)
+```
+
+```{r table-data-summary, echo=F, message=FALSE, warning=FALSE, comment=F}
+cap="Results from maximal logistic regression model (model 3) testing the effects of network growth values, corpus (English as baseline), input frequency, comprehensive AoA, word category and word length to predict word acquisition. All variables were scaled and centred. Category has been removed for ease of interpretation but this is shown in the full model output in S4."
+knitr::kable(table.model.summary, "latex", booktabs=T, caption=cap, digits=2, align="c",
+          col.names=gsub("[.1]", "", names(table.model.summary))) %>%
+  kable_styling(latex_options="scale_down") %>%
+  add_header_above(c(" "=1, "Actual"=5, "Target"=5))
+```

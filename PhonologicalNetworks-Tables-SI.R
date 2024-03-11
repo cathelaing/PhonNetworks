@@ -200,13 +200,7 @@ cor.deg.AOP.fig <- ggplot(globalthresholds_AOP,
   theme_bw(base_size = 12) +
   theme(axis.text=element_text(size=12),
         legend.title = element_blank(),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        plot.title = element_text(size = 8),
-        #legend.position = "top",
-        strip.text = element_text(size=9),
-        strip.background = element_rect(colour="black",size=1),
-        strip.text.x = element_text(margin = margin(.1, 0, .1, 0, "cm"))) +
+        legend.position = "bottom") +
   facet_wrap(~Speaker, ncol=3)
 
 
@@ -219,5 +213,6 @@ data.type.plot.bysubj <- ggplot(data = subset(regression_data, age == (AOP-1)), 
   ylab("INT value (normalised)") +
   xlab("Age (months)") +
   theme_bw(base_size = 12) +
-  theme(legend.title = element_blank()) +
+  theme(legend.title = element_blank(),
+        legend.position = "bottom") +
   facet_wrap(~Speaker, ncol=3)
