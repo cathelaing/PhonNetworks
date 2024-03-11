@@ -158,12 +158,6 @@
     {}{\InnerPatchFailed}%
   }
 {}{\PatchFailed}
-\DeclareDelayedFloatFlavor{ThreePartTable}{table}
-\DeclareDelayedFloatFlavor{lltable}{table}
-\DeclareDelayedFloatFlavor*{longtable}{table}
-\makeatletter
-\renewcommand{\efloat@iwrite}[1]{\immediate\expandafter\protected@write\csname efloat@post#1\endcsname{}}
-\makeatother
 \usepackage{csquotes}
 \usepackage[titles]{tocloft}
 \cftpagenumbersoff{figure}
@@ -191,14 +185,14 @@
 \date{}
 
 
-\shorttitle{SHORT TITLE}
+\shorttitle{Systematicity in early phonological development}
+
+\authornote{All code and associated data for this manuscript can be found on the project's OSF page at \url{https://osf.io/uzrsy/?view_only=340858d2084245d087fc00fcca41b679}.}
 
 \affiliation{\phantom{0}}
 
 \begin{document}
 \maketitle
-
-\textbackslash end\{document\}
 
 The supplementary materials below present further analyses and examples from the main study. This data is included here for transparency and further explanation, and to support replication and further analysis of this data. All scripts and data for the analysis can be found on the project's OSF page at \url{https://osf.io/uzrsy/?view_only=340858d2084245d087fc00fcca41b679}.
 
@@ -209,7 +203,7 @@ The analyses below (S1:S5) show:
 \item
   S1: Demonstration of how phonological distance was calculated, with examples
 \item
-  S2: Explanation of how the connectivity threshold of 0.25 was established for the analysis
+  S2: Overview of how the connectivity threshold of 0.25 was established for the analysis
 \item
   S3: AoP \textasciitilde{} Degree connectivity across infants in the dataset
 \item
@@ -223,17 +217,20 @@ The analyses below (S1:S5) show:
 \hypertarget{s1-establishing-phonological-distance}{%
 \subsubsection{S1: Establishing phonological distance}\label{s1-establishing-phonological-distance}}
 
-Phonological distance was established following Monaghan, Christiansen, Farmer and Fitneva's (2010) approach, with some adaptations. Note that in their study, only monosyllabic words are included, and so their approach is adapted here to include multisyllabic words. Following their method, each word was first divided into a series of `slots', according to its phonological structure. For example, the word \emph{baby} was separated into five slots: /b-e-i-b-i/. Because vowels were not accounted for, the nucleus of each syllable - both monophthongs and diphthongs - was then replaced by a generic V slot, i.e.~/b-V-b-V/. Words were then aligned by nucleus to generate a phonological distance measure between each possible word pair. All consonants at word onset and final syllables were aligned, regardless of syllable number, such that the final /d/ of \emph{bed} would be aligned with the final /n/ of \emph{balloon}. This is because infants may have a tendency to produce only certain consonants word-finally, and so this approach would capture such systematicity. For the English data, the maximal word structure considered in the analysis is C-C-C-V-C-C-\textbar C-C-C-V-\textbar C-C-C-V-\textbar C-C-C, where syllable boundaries are marked with a \textbar. This accounts for complex clusters at word onset (e.g.~\emph{splash} \textipa{[spl\ae{}S]}, C-C-C-V-C), coda (\emph{plant} \textipa{[pl\ae{}nt]}, C-C-V-C-C), and across syllable boundaries (\emph{pumpkin} \textipa{[p2mpkIn]}, C-V-C-C-\textbar C-V-C). In French the maximal structure was C-C-C-V-C-C-\textbar C-C-C-V-\textbar C-C-C-V-C\textbar C-C-C-V-C\textbar C-C-C-V-\textbar C-C-C-C. This accounted for multisyllabic target words such as \emph{hélicoptère} (``helicopter'' \textipa{[elIkOptEK]}, V-\textbar C-V-\textbar C-V-C-\textbar C-V-C) and \emph{appareil photo} (``camera'' \textipa{[apaKEJfOto]}, V-\textbar C-V-\textbar C-V-C-\textbar C-V-\textbar C-V), and complex codas as in \emph{arbre} (``tree'' \textipa{[aKbK]}, V-C-\textbar C-C). For vowel-initial words, the C1 slot in word-initial position is empty, but all other alignments remain the same.
+Phonological distance was established following Monaghan, Christiansen, Farmer and Fitneva's (2010) approach, with some adaptations. Note that in their study, only monosyllabic words are included, and so their approach is adapted here to include multisyllabic words. Following their method, each word was first divided into a series of `slots', according to its phonological structure. For example, the word \emph{baby} was separated into five slots: /b-e-i-b-i/. Because vowels were not accounted for, the nucleus of each syllable - both monophthongs and diphthongs - was then replaced by a generic V slot, i.e.~/b-V-b-V/. Words were then aligned by nucleus to generate a phonological distance measure between each possible word pair. All consonants at word onset and final syllables were aligned, regardless of syllable number, such that the final /d/ of \emph{bed} would be aligned with the final /n/ of \emph{balloon}. This is because infants may have a tendency to produce only certain consonants word-finally, and so this approach would capture such systematicity. For the English data, the maximal word structure considered in the analysis is C-C-C-V-C-C-\textbar C-C-C-V-\textbar C-C-C-V-\textbar C-C-C, where syllable boundaries are marked with a \textbar. This accounts for complex clusters at word onset (e.g.~\emph{splash} \textipa{/spl\ae{}S/}, C-C-C-V-C), coda (\emph{plant} \textipa{/pl\ae{}nt/}, C-C-V-C-C), and across syllable boundaries (\emph{pumpkin} \textipa{/p2mpkIn/}, C-V-C-C-\textbar C-V-C). In French the maximal structure was C-C-C-V-C-C-\textbar C-C-C-V-\textbar C-C-C-V-C\textbar C-C-C-V-C\textbar C-C-C-V-\textbar C-C-C-C. This accounted for multisyllabic target words such as \emph{hélicoptère} (``helicopter'' \textipa{/elIkOptEK/}, V-\textbar C-V-\textbar C-V-C-\textbar C-V-C) and \emph{appareil photo} (``camera'' \textipa{/apaKEjfOto/}, V-\textbar C-V-\textbar C-V-C-\textbar C-V-\textbar C-V), and complex codas as in \emph{arbre} (``tree'' \textipa{/aKbK/}, V-C-\textbar C-C). For vowel-initial words, the C1 slot in word-initial position is empty, but all other alignments remain the same.
 
 This maximal structure is required in an analysis of infant word production, to account for unexpected complexities such as, production of French \emph{mettre} ``to put'' as \textipa{[mEKstK]} and \emph{étoile} ``star'' as \textipa{[Estwal]}. In the infant data, it was not always easy to determine exactly where a syllable boundary should occur in complex productions, in part because this was not predictable based on the target form due to the variability in production, so would have to be done on a word-by-word basis, and in part because the syllable boundary of some productions could not be clearly established from its phonetic transcription. Instead, consonants were always assigned to the syllable-initial cluster, rather than assigning part of the cluster to the coda of the previous syllable (e.g.~for the examples above, the infant production of \emph{mettre} was coded as C-V-\textbar C-C-C-C and \emph{étoile} as V-\textbar C-C-C-V-C).
 
-\begin{landscape}
-\begin{longtable}[t]{ccccccccc}
+Table \ref{tab:table-phon-dist} shows examples of how phonological distance was calculated from the data.
+
+\begin{landscape}\begingroup\fontsize{9}{11}\selectfont
+
+\begin{longtabu} to \linewidth {>{\centering}X>{\centering}X>{\centering}X>{\centering}X>{\centering}X>{\centering}X>{\centering}X>{\centering}X>{\centering}X}
 \caption{\label{tab:table-phon-dist}Table showing how phonological distance was calculated across the dataset. Here distance is calculated between baby and both balloon and sky; note that only consonants were included in the phonological distance measure. Word position relates to each consonant's position in the word; features shows values of the 11 distinctive features that were used to generate distance values between each pair of words; sum squared differences shows the difference in values between baby and balloon/sky respectively. The phonological distance of each word pair is shown on the bottom row.}\\
 \toprule
 \multicolumn{1}{c}{ } & \multicolumn{2}{c}{Baby} & \multicolumn{3}{c}{Balloon} & \multicolumn{3}{c}{Sky} \\
 \cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-6} \cmidrule(l{3pt}r{3pt}){7-9}
-Word position\footnote[1]{S1 = first syllable, S2 = second syllable; C1 = first consonant, C2 = second consonant, CF = final consonant.} & Consonant & Features & Consonant & Features & Sum squared differences & Consonant & Features & Sum squared differences\\
+Word position\textsuperscript{a} & Consonant & Features & Consonant & Features & Sum squared differences & Consonant & Features & Sum squared differences\\
 \midrule
 S1C1 & b & -1,1,0,-1,1,1,0,-1,1,0,0 & b & -1,1,0,-1,1,1,0,-1,1,0,0 & 0+0+0+0+0+0+0+0+0+0+0 & s & -0.5,1,-1,-1,0,-1,1,-1,-1,1,0 & 0.25+0+1+0+1+4+1+0+4+1+0\\
 S1C2 & - & 0 & - & 0 & - & k & -1,1,-1,-1,1,-1,-1,-1,-1,-1,0 & 1+1+1+1+1+1+1+1+1+1+0\\
@@ -241,28 +238,50 @@ S2C1 & b & -1,1,0,-1,1,1,0,-1,1,0,0 & l & 0.5,0,1,0,-1,-1,1,-1,-1,1,0 & 2.25+1+1
 SFC1 & - & 0 & n & 0,0,1,1,1,-1,1,-1,-1,1,0 & 0+0+1+1+1+1+1+1+1+1+0 & - & 0 & -\\
 Phonological Distance ($\sum\sqrt\text{total}$) &  &  &  &  & 7.21590931844225 &  &  & 9.30802897123297\\
 \bottomrule
-\end{longtable}
+\end{longtabu}
+\endgroup{}
 \end{landscape}
-
-Table \ref{tab:table-phon-dist} shows examples of how phonological distance was calculated from the data.
-
-\newpage
 
 \hypertarget{s2-establishing-connectivity-within-the-networks}{%
 \subsubsection{S2: Establishing connectivity within the networks}\label{s2-establishing-connectivity-within-the-networks}}
 
-\includegraphics{PhonNetworksSupplementaryData_files/figure-latex/aop-degree-correlation-1.pdf}
-
-\includegraphics{Images/distance_density_plot.png}
-
 To determine the `cut-off' for connectivity in the networks (i.e., at what distance threshold are two words assumed to be connected within the network?), two approaches were taken:
-1) Spearman's correlation coefficients were generated between AoP and Degree for each word in the network along a series of 1000 connectivity thresholds between 0.01 and .99, following Amatuni and Bergelson (2017). This measure allows an overview of all potential connectivity in the networks; we expect a negative AoP\textasciitilde Degree correlation, since as the age of first production increases, a word should be less likely to connect to other nodes in the network. Figure \ref{fig:aop-degree-correlation} below shows how this relationship changes at different threshold limits: for thresholds upto around .15, there is no predictable change in the AoP\textasciitilde Degree correlation as threshold increases, and indeed some of the correlations are not significant in this range (shown by open circles in Figure \ref{fig:aop-degree-correlation}). On the other hand, from thresholds of around 0.48 we start to see the relationship between AoP and Degree become less negative (i.e.~rho moves closer to 0) and then plateau, such that connectivity in the network has reached its maximum potential connectivity, i.e.~almost all nodes are connected. We can see that this happens on or shortly after a threshold of 0.5 for both datasets. Figure \ref{fig:dist-density-plot} plots the distribution of scaled distances between all words in each infant's network. Here we can see that there are only few words in the dataset that have a distance of more than 0.5. A threshold between 0.15 and 0.5 is thus likely to capture the most appropriate representation of connectivity within the network.
-2) Taking this into account, as reported in the main paper, a value one SD below the mean was accepted to be a suitable threshold for connectivity in the dataset. A threshold of 0.25 sits at the upper end of the lowest quartiles across each of the four datasets (French and English, each with Actual and Target data; range = 0.18-0.24).
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\tightlist
+\item
+  Spearman's correlation coefficients were generated between AoP and Degree for each word in the network along a series of 1000 connectivity thresholds between 0.01 and .99, following Amatuni and Bergelson (2017). This measure allows an overview of all potential connectivity in the networks; we expect a negative AoP\textasciitilde Degree correlation, since as the age of first production increases, a word should be less likely to connect to other nodes in the network. Figure \ref{fig:aop-degree-correlation} below shows how this relationship changes at different threshold limits: for thresholds upto around .15, there is no predictable change in the AoP\textasciitilde Degree correlation as threshold increases, and indeed some of the correlations are not significant in this range (shown by open circles in Figure \ref{fig:aop-degree-correlation}). On the other hand, from thresholds of around 0.48 we start to see the relationship between AoP and Degree become less negative (i.e.~rho moves closer to 0) and then plateau, such that connectivity in the network has reached its maximum potential connectivity, i.e.~almost all nodes are connected. We can see that this happens on or shortly after a threshold of 0.5 for both datasets. Figure \ref{fig:dist-density-plot} plots the distribution of scaled distances between all words in each infant's network. Here we can see that there are only few words in the dataset that have a distance of more than 0.5. A threshold between 0.15 and 0.5 is thus likely to capture the most appropriate representation of connectivity within the network.
+\end{enumerate}
+
+\begin{figure}
+\centering
+\includegraphics{PhonNetworksSupplementaryData-test_files/figure-latex/aop-degree-correlation-1.pdf}
+\caption{\label{fig:aop-degree-correlation}Correlation coefficient (Spearman's rho) between age of production (AoP) and Degree across the dataset, at connectivity thresholds ranging from 0.01-0.99. Filled circles represent rho values that were signficant at p\textless.05; empty circles represent non-significant correlations. Dashed line shows selected connectivity threshold of 0.25.}
+\end{figure}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Taking this into account, as reported in the main paper, a value one SD below the mean was accepted to be a suitable threshold for connectivity in the dataset. A threshold of 0.25 sits at the upper end of the lowest quartiles across each of the four datasets (French and English, each with Actual and Target data; range = 0.18-0.24).
+\end{enumerate}
+
+\begin{figure}
+\centering
+\includegraphics{Images/distance-density-plot.png}
+\caption{\label{fig:dist-density-plot}Density plot showing distribution of scaled phonological distance between word pairs in each infant's data. Plot is faceted by corpus; Actual data is shown in pink and Target data is shown in blue. The dashed line represents the connectivity threshold of 0.25, as applied in the analysis.}
+\end{figure}
 
 To further explore the extent to which the results are dependent on this threshold value, the data was re-analysed at a series of additional thresholds, representing the lower and upper limits of the analysable range discussed above (0.15-0.5), as well as each of the lower quartile values for the four individual datasets, and the overall mean connectivity in the data (0.34). The full dataset was regenerated seven times with each of these seven thresholds as a cut-off for connectivity (i.e.~two nodes in the network were said to be connected at a threshold of \textless{}\emph{n}, where \emph{n} is the threshold being tested) and both the AoP\textasciitilde Degree correlations and the full GLMER models were run for both Actual and Target data, as in the main paper. Results are shown in Tables \ref{tab:table-thresholdtest-actual} and \ref{tab:table-thresholdtest-target}.
 
+\newpage
+
+\begingroup\fontsize{8}{10}\selectfont
+
 \begin{longtable}[t]{ccccccccc}
-\caption{\label{tab:table-thresholdtest-actual}Summary of key variables in the Actual dataset across seven different connectivity thresholds. At each threshold, the number of words that do not connect to any other word in the network is shown, alongisde Spearman's rho values for AoP~Degree correlation tests and model coefficients (estimates, p values and 95%% confidence intervals) for GLMER models testing the effect of INT and EXT on word learning. GLMERs were the same as those reported in the main paper, varying only by connectivity threshold.}\\
+\caption{\label{tab:table-thresholdtest-actual}Summary of key variables in the Actual dataset across seven different connectivity thresholds. At each threshold, the number of words that do not connect to any other word in the network is shown, alongisde Spearman's rho values for AoP~Degree correlation tests and model coefficients (estimates, p values and 95\% confidence intervals) for GLMER models testing the effect of INT and EXT on word learning. GLMERs were the same as those reported in the main paper, varying only by connectivity threshold.}\\
 \toprule
 \multicolumn{3}{c}{ } & \multicolumn{3}{c}{INT} & \multicolumn{3}{c}{EXT} \\
 \cmidrule(l{3pt}r{3pt}){4-6} \cmidrule(l{3pt}r{3pt}){7-9}
@@ -278,9 +297,12 @@ Threshold & Unconnected words & Spearman's rho & Estimate & p & 95\% CI & Estima
 0.50 & 0 & -0.33 & 0.45 & <0.001 & {}[0.29,0.62] & 0.00 & 0.96 & {}[-0.16,0.17]\\
 \bottomrule
 \end{longtable}
+\endgroup{}
+
+\begingroup\fontsize{8}{10}\selectfont
 
 \begin{longtable}[t]{ccccccccc}
-\caption{\label{tab:table-thresholdtest-target}Summary of key variables in the Target dataset across seven different connectivity thresholds. At each threshold, the number of words that do not connect to any other word in the network is shown, alongisde Spearman's rho values for AoP~Degree correlation tests and model coefficients (estimates, p values and 95%% confidence intervals) for GLMER models testing the effect of INT and EXT on word learning. GLMERs were the same as those reported in the main paper, varying only by connectivity threshold.}\\
+\caption{\label{tab:table-thresholdtest-target}Summary of key variables in the Target dataset across seven different connectivity thresholds. At each threshold, the number of words that do not connect to any other word in the network is shown, alongisde Spearman's rho values for AoP~Degree correlation tests and model coefficients (estimates, p values and 95\% confidence intervals) for GLMER models testing the effect of INT and EXT on word learning. GLMERs were the same as those reported in the main paper, varying only by connectivity threshold.}\\
 \toprule
 \multicolumn{3}{c}{ } & \multicolumn{3}{c}{INT} & \multicolumn{3}{c}{EXT} \\
 \cmidrule(l{3pt}r{3pt}){4-6} \cmidrule(l{3pt}r{3pt}){7-9}
@@ -296,6 +318,7 @@ Threshold & Unconnected words & Spearman's rho & Estimate & p & 95\% CI & Estima
 0.50 & 0 & -0.29 & 0.58 & <0.001 & {}[0.28,0.88] & 0.06 & 0.478 & {}[-0.11,0.23]\\
 \bottomrule
 \end{longtable}
+\endgroup{}
 
 \newpage
 
@@ -322,52 +345,59 @@ Tim & French & -0.34 & <0.001 & -0.18 & <0.001\\
 \bottomrule
 \end{longtable}
 
-\includegraphics{PhonNetworksSupplementaryData_files/figure-latex/Figure-AOP-deg-corr-1.pdf}
-
 Table \ref{tab:table-aop-deg-corr} and Figure \ref{fig:Figure-AOP-deg-corr} show Spearman's correlation coefficients and corresponding p values, as well as visualized data, for AoP\textasciitilde Degree correlations at a threshold of 0.25 for each infant in the dataset.
+
+\begin{figure}
+\centering
+\includegraphics{PhonNetworksSupplementaryData-test_files/figure-latex/Figure-AOP-deg-corr-1.pdf}
+\caption{\label{fig:Figure-AOP-deg-corr}Age of production in relation to degree (z-score) of each word in the data. Individual points show individual word types produced in each month, with regression lines showing correlations for each infant. Data type (Actual vs.~Target) is indexed by colour; shaded boxes show French data, un-shaded show English data.}
+\end{figure}
 
 \newpage
 
 \hypertarget{s4-network-growth-models-full-model-outputs}{%
 \subsubsection{S4: Network growth models: Full model outputs}\label{s4-network-growth-models-full-model-outputs}}
 
-The table below shows the full model outputs from the logistic mixed effects regression models run in the main paper, this time with word category included in the table.
+Table \ref{tab:full-data-summary} shows the full model outputs from the logistic mixed effects regression models run in the main paper, this time with word category included in the table.
+
+\begingroup\fontsize{7}{9}\selectfont
 
 \begin{longtable}[t]{ccccccccccc}
-\caption{\label{tab:full-data-summary}Results from maximal logistic regression model (model 3) testing the effects of network growth values, corpus (English as baseline), input frequency, comprehensive AoA, word category and word length to predict word acquisition. All variables were scaled and centred. Word category was defined according to word categories on the McArthur Bates CDI (Fenson et al., 1994)}\\
+\caption{\label{tab:full-data-summary}Results from maximal logistic regression model (model 3) testing the effects of network growth values, corpus (English as baseline), input frequency, comprehensive AoA, word category (nouns as baseline) and word length to predict word acquisition. All variables were scaled and centred. Word category was defined according to word categories on the McArthur Bates CDI (Fenson et al., 1994).}\\
 \toprule
 \multicolumn{1}{c}{ } & \multicolumn{4}{c}{Actual} & \multicolumn{4}{c}{Target} \\
 \cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
-Effect & beta & SE & z & p & Effect & beta & SE & z & p & 95\% CI\\
+Effect & beta & SE & z & p & 95\% CI & beta & SE & z & p & 95\% CI\\
 \midrule
-Intercept & -3.35 & 0.27 & -12.51 & <0.001 & Intercept & -2.96 & 0.38 & -7.79 & <0.001 & {}[-3.71,-2.22]\\
-INT value & 0.88 & 0.07 & 12.50 & <0.001 & INT z & 0.47 & 0.06 & 8.08 & <0.001 & {}[0.35,0.58]\\
-Age & 0.93 & 0.14 & 6.57 & <0.001 & Age scaled & 1.25 & 0.13 & 9.77 & <0.001 & {}[1,1.5]\\
-EXT value & 0.02 & 0.05 & 0.46 & 0.648 & EXT z & 0.00 & 0.05 & 0.04 & 0.964 & {}[-0.1,0.1]\\
-Length & -0.07 & 0.06 & -1.29 & 0.198 & Length scaled & -0.14 & 0.06 & -2.32 & 0.021 & {}[-0.25,-0.02]\\
+Intercept & -3.35 & 0.27 & -12.51 & <0.001 & {}[-3.87,-2.82] & -2.96 & 0.38 & -7.79 & <0.001 & {}[-3.71,-2.22]\\
+INT value & 0.88 & 0.07 & 12.50 & <0.001 & {}[0.75,1.02] & 0.47 & 0.06 & 8.08 & <0.001 & {}[0.35,0.58]\\
+EXT value & 0.02 & 0.05 & 0.46 & 0.648 & {}[-0.07,0.12] & 0.00 & 0.05 & 0.04 & 0.964 & {}[-0.1,0.1]\\
+Age & 0.93 & 0.14 & 6.57 & <0.001 & {}[0.65,1.2] & 1.25 & 0.13 & 9.77 & <0.001 & {}[1,1.5]\\
+AoA & -0.22 & 0.04 & -6.13 & <0.001 & {}[-0.29,-0.15] & -0.21 & 0.04 & -5.79 & <0.001 & {}[-0.29,-0.14]\\
 \addlinespace
-Input frequency & 0.17 & 0.05 & 3.31 & 0.001 & Freq scaled & 0.19 & 0.05 & 3.71 & <0.001 & {}[0.09,0.29]\\
-AoA & -0.22 & 0.04 & -6.13 & <0.001 & Aoa scaled & -0.21 & 0.04 & -5.79 & <0.001 & {}[-0.29,-0.14]\\
-Corpus & 0.52 & 0.31 & 1.65 & 0.099 & CorpusEnglish & 0.93 & 0.47 & 1.99 & 0.047 & {}[0.01,1.84]\\
-Categoryverbs & -0.53 & 0.08 & -6.69 & <0.001 & Categoryverbs & -0.61 & 0.08 & -7.59 & <0.001 & {}[-0.77,-0.45]\\
-Category: adjectives & -0.15 & 0.14 & -1.05 & 0.292 & Categorydescriptive words & -0.13 & 0.15 & -0.89 & 0.373 & {}[-0.42,0.16]\\
+Length & -0.07 & 0.06 & -1.29 & 0.198 & {}[-0.19,0.04] & -0.14 & 0.06 & -2.32 & 0.021 & {}[-0.25,-0.02]\\
+Input frequency & 0.17 & 0.05 & 3.31 & 0.001 & {}[0.07,0.27] & 0.19 & 0.05 & 3.71 & <0.001 & {}[0.09,0.29]\\
+Corpus & 0.52 & 0.31 & 1.65 & 0.099 & {}[-0.1,1.13] & 0.93 & 0.47 & 1.99 & 0.047 & {}[0.01,1.84]\\
+Category: verbs & -0.53 & 0.08 & -6.69 & <0.001 & {}[-0.69,-0.38] & -0.61 & 0.08 & -7.59 & <0.001 & {}[-0.77,-0.45]\\
+Category: adjectives & -0.15 & 0.14 & -1.05 & 0.292 & {}[-0.43,0.13] & -0.13 & 0.15 & -0.89 & 0.373 & {}[-0.42,0.16]\\
 \addlinespace
-Category: games/routines & -0.16 & 0.16 & -0.99 & 0.321 & Categorygames routines & -0.14 & 0.16 & -0.83 & 0.405 & {}[-0.46,0.18]\\
-Category: prepositions & -0.06 & 0.42 & -0.13 & 0.896 & Categoryprepositions & -0.17 & 0.46 & -0.37 & 0.710 & {}[-1.08,0.73]\\
-Category: pronouns & -0.29 & 0.40 & -0.73 & 0.467 & Categorypronouns & -0.40 & 0.39 & -1.01 & 0.310 & {}[-1.17,0.37]\\
-Category: quantifiers & 0.87 & 0.68 & 1.28 & 0.200 & Categoryquantifiers & 0.42 & 0.68 & 0.62 & 0.537 & {}[-0.91,1.75]\\
-Category: onomatopoeia & 0.29 & 0.17 & 1.70 & 0.089 & Categorysounds & 0.17 & 0.17 & 1.01 & 0.313 & {}[-0.16,0.5]\\
+Category: games/routines & -0.16 & 0.16 & -0.99 & 0.321 & {}[-0.47,0.16] & -0.14 & 0.16 & -0.83 & 0.405 & {}[-0.46,0.18]\\
+Category: prepositions & -0.06 & 0.42 & -0.13 & 0.896 & {}[-0.88,0.77] & -0.17 & 0.46 & -0.37 & 0.710 & {}[-1.08,0.73]\\
+Category: pronouns & -0.29 & 0.40 & -0.73 & 0.467 & {}[-1.09,0.5] & -0.40 & 0.39 & -1.01 & 0.310 & {}[-1.17,0.37]\\
+Category: quantifiers & 0.87 & 0.68 & 1.28 & 0.200 & {}[-0.46,2.21] & 0.42 & 0.68 & 0.62 & 0.537 & {}[-0.91,1.75]\\
+Category: onomatopoeia & 0.29 & 0.17 & 1.70 & 0.089 & {}[-0.04,0.62] & 0.17 & 0.17 & 1.01 & 0.313 & {}[-0.16,0.5]\\
 \addlinespace
-Category: time & -1.67 & 0.62 & -2.72 & 0.007 & Categorytime words & -1.95 & 0.61 & -3.20 & 0.001 & {}[-3.14,-0.76]\\
-Category: locations & 0.34 & 0.26 & 1.33 & 0.182 & Categorylocations & 0.23 & 0.26 & 0.89 & 0.371 & {}[-0.28,0.74]\\
-Age x INT & 0.12 & 0.05 & 2.27 & 0.023 & INT z \$\textbackslash{}times\$ Age scaled & -0.07 & 0.04 & -1.62 & 0.106 & {}[-0.16,0.01]\\
-Age x EXT & -0.02 & 0.04 & -0.42 & 0.673 & Age scaled \$\textbackslash{}times\$ EXT z & -0.03 & 0.05 & -0.56 & 0.575 & {}[-0.12,0.06]\\
-Age scaled \$\textbackslash{}times\$ Length scaled & 0.04 & 0.05 & 0.76 & 0.449 & Age scaled \$\textbackslash{}times\$ Length scaled & 0.01 & 0.05 & 0.22 & 0.825 & {}[-0.09,0.11]\\
+Category: time & -1.67 & 0.62 & -2.72 & 0.007 & {}[-2.88,-0.47] & -1.95 & 0.61 & -3.20 & 0.001 & {}[-3.14,-0.76]\\
+Category: locations & 0.34 & 0.26 & 1.33 & 0.182 & {}[-0.16,0.85] & 0.23 & 0.26 & 0.89 & 0.371 & {}[-0.28,0.74]\\
+Age x INT & 0.12 & 0.05 & 2.27 & 0.023 & {}[0.02,0.23] & -0.07 & 0.04 & -1.62 & 0.106 & {}[-0.16,0.01]\\
+Age x EXT & -0.02 & 0.04 & -0.42 & 0.673 & {}[-0.1,0.07] & -0.03 & 0.05 & -0.56 & 0.575 & {}[-0.12,0.06]\\
+Age x AoA & 0.11 & 0.03 & 3.92 & <0.001 & {}[0.06,0.17] & 0.10 & 0.03 & 3.28 & 0.001 & {}[0.04,0.16]\\
 \addlinespace
-Age x Input frequency & -0.06 & 0.03 & -1.86 & 0.063 & Age scaled \$\textbackslash{}times\$ Freq scaled & -0.06 & 0.03 & -1.92 & 0.055 & {}[-0.13,0]\\
-Age x AoA & 0.11 & 0.03 & 3.92 & <0.001 & Age scaled \$\textbackslash{}times\$ Aoa scaled & 0.10 & 0.03 & 3.28 & 0.001 & {}[0.04,0.16]\\
+Age x Length & 0.04 & 0.05 & 0.76 & 0.449 & {}[-0.06,0.13] & 0.01 & 0.05 & 0.22 & 0.825 & {}[-0.09,0.11]\\
+Age x Input frequency & -0.06 & 0.03 & -1.86 & 0.063 & {}[-0.12,0] & -0.06 & 0.03 & -1.92 & 0.055 & {}[-0.13,0]\\
 \bottomrule
 \end{longtable}
+\endgroup{}
 
 \newpage
 
@@ -376,7 +406,11 @@ Age x AoA & 0.11 & 0.03 & 3.92 & <0.001 & Age scaled \$\textbackslash{}times\$ A
 
 Between-child differences are well established in the phonological development literature (Maekawa \& Storkel, 2006; Vihman, Ferguson, \& Elbert, 1986). There is thus reason to expect that the nine infants in the current dataset may have differential paths to word production, and so results may be variable when considered across speakers. Figure \ref{fig:by-speaker-data} below shows a by-infant breakdown of the INT value trajectories visualised in Figure 4 of the main paper. Descriptively, in Anais, Nathan and Alex's data, INT values increase exponentially over time, suggesting that INT is an increasingly influential factor in their early production. On the other hand, INT values plateau relatively early in the data for William, Naima and Lily, suggesting that other factors may have a stronger influence in these infants' word production and acquisition after a certain time-point.
 
-\includegraphics{PhonNetworksSupplementaryData_files/figure-latex/by-speaker-data-1.pdf}
+\begin{figure}
+\centering
+\includegraphics{PhonNetworksSupplementaryData-test_files/figure-latex/by-speaker-data-1.pdf}
+\caption{\label{fig:by-speaker-data}Smooth plot showing scaled INT values in Actual vs.~Target forms. Shaded areas show 95\% confidence intervals, lines indicate mean trajectories over time, coloured circles represent individual datapoints, jittered for visual clarity. Plot is faceted by infant for comparison across subjects.}
+\end{figure}
 
 \newpage
 

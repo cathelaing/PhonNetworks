@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.3.8)  8 MAR 2024 20:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.3.8)  11 MAR 2024 10:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**PhonNetworksSupplementaryData.tex
-(./PhonNetworksSupplementaryData.tex
+**PhonNetworksSupplementaryData-test.tex
+(./PhonNetworksSupplementaryData-test.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
 (c:/Users/cs524/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/apa6/apa6.cls
@@ -570,33 +570,33 @@ Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'english'.
-No file PhonNetworksSupplementaryData.aux.
-\openout1 = `PhonNetworksSupplementaryData.aux'.
+No file PhonNetworksSupplementaryData-test.aux.
+\openout1 = `PhonNetworksSupplementaryData-test.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 198.
-LaTeX Font Info:    ... okay on input line 198.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 198.
-LaTeX Font Info:    ... okay on input line 198.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 198.
-LaTeX Font Info:    ... okay on input line 198.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 198.
-LaTeX Font Info:    ... okay on input line 198.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 198.
-LaTeX Font Info:    ... okay on input line 198.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 198.
-LaTeX Font Info:    ... okay on input line 198.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 198.
-LaTeX Font Info:    ... okay on input line 198.
-LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 198.
-LaTeX Font Info:    Trying to load font information for T3+cmr on input line 198.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 194.
+LaTeX Font Info:    ... okay on input line 194.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 194.
+LaTeX Font Info:    ... okay on input line 194.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 194.
+LaTeX Font Info:    ... okay on input line 194.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 194.
+LaTeX Font Info:    ... okay on input line 194.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 194.
+LaTeX Font Info:    ... okay on input line 194.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 194.
+LaTeX Font Info:    ... okay on input line 194.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 194.
+LaTeX Font Info:    ... okay on input line 194.
+LaTeX Font Info:    Checking defaults for T3/cmr/m/n on input line 194.
+LaTeX Font Info:    Trying to load font information for T3+cmr on input line 194.
 (c:/Users/cs524/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tipa/t3cmr.fd
 File: t3cmr.fd 2001/12/31 TIPA font definitions
 )
-LaTeX Font Info:    ... okay on input line 198.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 198.
-LaTeX Font Info:    ... okay on input line 198.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 198.
-LaTeX Font Info:    ... okay on input line 198.
+LaTeX Font Info:    ... okay on input line 194.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 194.
+LaTeX Font Info:    ... okay on input line 194.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 194.
+LaTeX Font Info:    ... okay on input line 194.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -647,159 +647,77 @@ Package caption Info: longtable package is loaded.
 Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
 )
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring OFF on input line 198.
+Package hyperref Info: Link coloring OFF on input line 194.
 \@outlinefile=\write5
-\openout5 = `PhonNetworksSupplementaryData.out'.
+\openout5 = `PhonNetworksSupplementaryData-test.out'.
 
 
 Class apa6 Warning: Abstract not defined.
 
-Class apa6 Info: Keywords not defined on input line 200.
-[1{c:/Users/cs524/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/cs524/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}
-
-]
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 203.
+Class apa6 Info: Keywords not defined on input line 196.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 196.
 (c:/Users/cs524/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 203.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 196.
 (c:/Users/cs524/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 203.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 196.
 (c:/Users/cs524/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 203.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 196.
 (c:/Users/cs524/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 203.
+(Font)              <12> on input line 196.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 203.
+(Font)              <8> on input line 196.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 203.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 203.
+(Font)              <6> on input line 196.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 196.
 (c:/Users/cs524/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 203.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 196.
 (c:/Users/cs524/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 210.
+) [1{c:/Users/cs524/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/cs524/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}
+
+]
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 204.
 (c:/Users/cs524/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for T3+lmr on input line 226.
-LaTeX Font Info:    No file T3lmr.fd. on input line 226.
+LaTeX Font Info:    Trying to load font information for T3+lmr on input line 220.
+LaTeX Font Info:    No file T3lmr.fd. on input line 220.
 
 LaTeX Font Warning: Font shape `T3/lmr/m/n' undefined
-(Font)              using `T3/cmr/m/n' instead on input line 226.
+(Font)              using `T3/cmr/m/n' instead on input line 220.
 
-[2{c:/Users/cs524/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}] [3]
-\openout3 = `PhonNetworksSupplementaryData.ttt'.
+[2{c:/Users/cs524/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
 
-(PhonNetworksSupplementaryData.ttt)
+LaTeX Warning: Reference `tab:table-phon-dist' on page 3 undefined on input line 224.
 
-LaTeX Warning: Reference `tab:table-phon-dist' on page 4 undefined on input line 247.
+[3]
 
-[4
+! LaTeX Error: Environment longtabu undefined.
 
-
-]
-<PhonNetworksSupplementaryData_files/figure-latex/aop-degree-correlation-1.pdf, id=30, 469.755pt x 325.215pt>
-File: PhonNetworksSupplementaryData_files/figure-latex/aop-degree-correlation-1.pdf Graphic file (type pdf)
-<use PhonNetworksSupplementaryData_files/figure-latex/aop-degree-correlation-1.pdf>
-Package pdftex.def Info: PhonNetworksSupplementaryData_files/figure-latex/aop-degree-correlation-1.pdf  used on input line 254.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<Images/distance_density_plot.png, id=31, 488.57532pt x 310.91156pt>
-File: Images/distance_density_plot.png Graphic file (type png)
-<use Images/distance_density_plot.png>
-Package pdftex.def Info: Images/distance_density_plot.png  used on input line 256.
-(pdftex.def)             Requested size: 469.76503pt x 298.94136pt.
-
-Overfull \hbox (28.91756pt too wide) in paragraph at lines 256--257
-[][]  
- []
-
-
-LaTeX Warning: Reference `fig:aop-degree-correlation' on page 5 undefined on input line 259.
-
-
-LaTeX Warning: Reference `fig:aop-degree-correlation' on page 5 undefined on input line 259.
-
-
-LaTeX Warning: Reference `fig:dist-density-plot' on page 5 undefined on input line 259.
-
-[5 <./PhonNetworksSupplementaryData_files/figure-latex/aop-degree-correlation-1.pdf> <./Images/distance_density_plot.png>]
-
-LaTeX Warning: Reference `tab:table-thresholdtest-actual' on page 6 undefined on input line 262.
-
-
-LaTeX Warning: Reference `tab:table-thresholdtest-target' on page 6 undefined on input line 262.
-
-
-Underfull \vbox (badness 7649) has occurred while \output is active []
-
-[6] [7]
-<PhonNetworksSupplementaryData_files/figure-latex/Figure-AOP-deg-corr-1.pdf, id=53, 469.755pt x 325.215pt>
-File: PhonNetworksSupplementaryData_files/figure-latex/Figure-AOP-deg-corr-1.pdf Graphic file (type pdf)
-<use PhonNetworksSupplementaryData_files/figure-latex/Figure-AOP-deg-corr-1.pdf>
-Package pdftex.def Info: PhonNetworksSupplementaryData_files/figure-latex/Figure-AOP-deg-corr-1.pdf  used on input line 325.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-
-LaTeX Warning: Reference `tab:table-aop-deg-corr' on page 8 undefined on input line 327.
-
-
-LaTeX Warning: Reference `fig:Figure-AOP-deg-corr' on page 8 undefined on input line 327.
-
-[8 <./PhonNetworksSupplementaryData_files/figure-latex/Figure-AOP-deg-corr-1.pdf>] [9]
-
-LaTeX Warning: Reference `fig:by-speaker-data' on page 10 undefined on input line 377.
-
-<PhonNetworksSupplementaryData_files/figure-latex/by-speaker-data-1.pdf, id=75, 469.755pt x 325.215pt>
-File: PhonNetworksSupplementaryData_files/figure-latex/by-speaker-data-1.pdf Graphic file (type pdf)
-<use PhonNetworksSupplementaryData_files/figure-latex/by-speaker-data-1.pdf>
-Package pdftex.def Info: PhonNetworksSupplementaryData_files/figure-latex/by-speaker-data-1.pdf  used on input line 379.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-
-Overfull \hbox (28.90639pt too wide) in paragraph at lines 379--380
-[][]  
- []
-
-[10 <./PhonNetworksSupplementaryData_files/figure-latex/by-speaker-data-1.pdf>] [11] AED endfloat: Processing end Figures and Tables (./PhonNetworksSupplementaryData.ttt
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 6.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 6.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 6.
-
-Overfull \hbox (678.41771pt too wide) in alignment at lines 1--14
- [] [] [] [] [] [] [] [] [] 
- []
-
-[12
-
-
-
-{c:/Users/cs524/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{c:/Users/cs524/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}])
-Runaway argument?
-{\label {tab:table-thresholdtest-actual}Summary of key variables in t\ETC.
-! File ended while scanning use of \caption@xdblarg.
-<inserted text> 
-                \par 
-l.404 \end{document}
-                     
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.228 \begin{longtabu}
+                       to \linewidth {>{\centering}X>{\centering}X>{\centeri... 
 Here is how much of TeX's memory you used:
- 16740 strings out of 476075
- 271928 string characters out of 5791330
- 1938190 words of memory out of 5000000
- 38513 multiletter control sequences out of 15000+600000
- 634809 words of font info for 103 fonts, out of 8000000 for 9000
+ 16594 strings out of 476075
+ 268100 string characters out of 5791330
+ 1934190 words of memory out of 5000000
+ 38414 multiletter control sequences out of 15000+600000
+ 602175 words of font info for 73 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 72i,11n,79p,2268b,581s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,11n,79p,2273b,523s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 !  ==> Fatal error occurred, no output PDF file produced!

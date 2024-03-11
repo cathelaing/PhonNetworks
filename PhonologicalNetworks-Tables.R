@@ -1,4 +1,4 @@
-## Tables for main paper, Phonological Networks and Systematicity in Early Lexical Acquisition
+## Tables and figures for main paper, Phonological Networks and Systematicity in Early Lexical Acquisition
 
 speaker.data.sessions <- regression_data %>%  
   group_by(Speaker, corpus) %>%
@@ -183,4 +183,15 @@ table.aop.deg.corr.speaker <- globalthresholds_AOP %>%
   rename("Corpus" = "corpus",
          "p" = "pval") %>%
   mutate(p = scales::pvalue(p))
+
+## Figure 4
+
+data_type_plot <- ggplot(data = subset(regression_data, age == (AOP-1)), aes(x = age, y = INT_scaled, colour = data_type)) +
+  geom_point(shape = 21, position = position_jitter(.1)) +
+  geom_smooth(aes(fill = data_type)) +
+  ylab("INT value (normalised)") +
+  xlab("Age (months)") +
+  ggtitle("Figure 4") +
+  theme_bw(base_size = 14) +
+  theme(legend.title = element_blank())
 

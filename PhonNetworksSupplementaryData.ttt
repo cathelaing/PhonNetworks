@@ -1,0 +1,110 @@
+\begin{longtable}[t]{ccccccccc}
+\caption{\label{tab:table-phon-dist}Table showing how phonological distance was calculated across the dataset. Here distance is calculated between baby and both balloon and sky; note that only consonants were included in the phonological distance measure. Word position relates to each consonant's position in the word; features shows values of the 11 distinctive features that were used to generate distance values between each pair of words; sum squared differences shows the difference in values between baby and balloon/sky respectively. The phonological distance of each word pair is shown on the bottom row.}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{2}{c}{Baby} & \multicolumn{3}{c}{Balloon} & \multicolumn{3}{c}{Sky} \\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-6} \cmidrule(l{3pt}r{3pt}){7-9}
+Word position\footnote[1]{S1 = first syllable, S2 = second syllable; C1 = first consonant, C2 = second consonant, CF = final consonant.} & Consonant & Features & Consonant & Features & Sum squared differences & Consonant & Features & Sum squared differences\\
+\midrule
+S1C1 & b & -1,1,0,-1,1,1,0,-1,1,0,0 & b & -1,1,0,-1,1,1,0,-1,1,0,0 & 0+0+0+0+0+0+0+0+0+0+0 & s & -0.5,1,-1,-1,0,-1,1,-1,-1,1,0 & 0.25+0+1+0+1+4+1+0+4+1+0\\
+S1C2 & - & 0 & - & 0 & - & k & -1,1,-1,-1,1,-1,-1,-1,-1,-1,0 & 1+1+1+1+1+1+1+1+1+1+0\\
+S2C1 & b & -1,1,0,-1,1,1,0,-1,1,0,0 & l & 0.5,0,1,0,-1,-1,1,-1,-1,1,0 & 2.25+1+1+1+4+4+1+0+4+1+0 & - & 0 & 1+1+0+1+1+1+0+1+1+0+0\\
+SFC1 & - & 0 & n & 0,0,1,1,1,-1,1,-1,-1,1,0 & 0+0+1+1+1+1+1+1+1+1+0 & - & 0 & -\\
+Phonological Distance ($\sum\sqrt\text{total}$) &  &  &  &  & 7.21590931844225 &  &  & 9.30802897123297\\
+\bottomrule
+\end{longtable}
+\efloatseparator
+ 
+\begin{longtable}[t]{ccccccccc}
+\caption{\label{tab:table-thresholdtest-actual}Summary of key variables in the Actual dataset across seven different connectivity thresholds. At each threshold, the number of words that do not connect to any other word in the network is shown, alongisde Spearman's rho values for AoP~Degree correlation tests and model coefficients (estimates, p values and 95%% confidence intervals) for GLMER models testing the effect of INT and EXT on word learning. GLMERs were the same as those reported in the main paper, varying only by connectivity threshold.}\\
+\toprule
+\multicolumn{3}{c}{ } & \multicolumn{3}{c}{INT} & \multicolumn{3}{c}{EXT} \\
+\cmidrule(l{3pt}r{3pt}){4-6} \cmidrule(l{3pt}r{3pt}){7-9}
+Threshold & Unconnected words & Spearman's rho & Estimate & p & 95\% CI & Estimate & p & 95\% CI\\
+\midrule
+0.15 & 329 & -0.15 & 0.44 & <0.001 & {}[0.33,0.55] & 1.06 & 0.03 & {}[0.12,2.01]\\
+0.18 & 210 & -0.15 & 0.42 & <0.001 & {}[0.31,0.53] & 0.25 & 0.38 & {}[-0.31,0.82]\\
+0.19 & 173 & -0.16 & 0.38 & <0.001 & {}[0.27,0.49] & 0.07 & 0.78 & {}[-0.44,0.58]\\
+0.21 & 109 & -0.19 & 0.42 & <0.001 & {}[0.31,0.53] & 0.12 & 0.58 & {}[-0.3,0.53]\\
+0.24 & 59 & -0.22 & 0.45 & <0.001 & {}[0.34,0.57] & 0.03 & 0.85 & {}[-0.27,0.33]\\
+\addlinespace
+0.34 & 8 & -0.33 & 0.42 & <0.001 & {}[0.28,0.55] & -0.07 & 0.46 & {}[-0.25,0.11]\\
+0.50 & 0 & -0.33 & 0.45 & <0.001 & {}[0.29,0.62] & 0.00 & 0.96 & {}[-0.16,0.17]\\
+\bottomrule
+\end{longtable}
+\efloatseparator
+ 
+\begin{longtable}[t]{ccccccccc}
+\caption{\label{tab:table-thresholdtest-target}Summary of key variables in the Target dataset across seven different connectivity thresholds. At each threshold, the number of words that do not connect to any other word in the network is shown, alongisde Spearman's rho values for AoP~Degree correlation tests and model coefficients (estimates, p values and 95%% confidence intervals) for GLMER models testing the effect of INT and EXT on word learning. GLMERs were the same as those reported in the main paper, varying only by connectivity threshold.}\\
+\toprule
+\multicolumn{3}{c}{ } & \multicolumn{3}{c}{INT} & \multicolumn{3}{c}{EXT} \\
+\cmidrule(l{3pt}r{3pt}){4-6} \cmidrule(l{3pt}r{3pt}){7-9}
+Threshold & Unconnected words & Spearman's rho & Estimate & p & 95\% CI & Estimate & p & 95\% CI\\
+\midrule
+0.15 & 388 & -0.18 & 0.65 & <0.001 & {}[0.44,0.86] & 1.97 & <0.001 & {}[0.88,3.05]\\
+0.18 & 298 & -0.17 & 0.60 & <0.001 & {}[0.39,0.8] & 0.59 & 0.056 & {}[-0.01,1.2]\\
+0.19 & 269 & -0.17 & 0.57 & <0.001 & {}[0.37,0.78] & 0.48 & 0.089 & {}[-0.07,1.02]\\
+0.21 & 179 & -0.19 & 0.64 & <0.001 & {}[0.44,0.85] & 0.09 & 0.685 & {}[-0.35,0.53]\\
+0.24 & 74 & -0.21 & 0.64 & <0.001 & {}[0.43,0.86] & -0.07 & 0.655 & {}[-0.39,0.24]\\
+\addlinespace
+0.34 & 7 & -0.25 & 0.76 & <0.001 & {}[0.52,1] & -0.05 & 0.584 & {}[-0.24,0.13]\\
+0.50 & 0 & -0.29 & 0.58 & <0.001 & {}[0.28,0.88] & 0.06 & 0.478 & {}[-0.11,0.23]\\
+\bottomrule
+\end{longtable}
+\efloatseparator
+ 
+\begin{longtable}[t]{cccccc}
+\caption{\label{tab:table-aop-deg-corr}Outputs (rho and p values) of AoP-degree Spearman's correlation tests for each infant in the dataset.}\\
+\toprule
+\multicolumn{2}{c}{ } & \multicolumn{2}{c}{Actual} & \multicolumn{2}{c}{Target} \\
+\cmidrule(l{3pt}r{3pt}){3-4} \cmidrule(l{3pt}r{3pt}){5-6}
+Speaker & Corpus & Spearman's rho & p & Spearman's rho & p\\
+\midrule
+Alex & English & -0.27 & <0.001 & -0.22 & <0.001\\
+Lily & English & -0.28 & <0.001 & -0.26 & <0.001\\
+Naima & English & -0.34 & <0.001 & -0.22 & <0.001\\
+Violet & English & -0.28 & <0.001 & -0.25 & <0.001\\
+William & English & -0.28 & <0.001 & -0.20 & <0.001\\
+\addlinespace
+Anais & French & 0.02 & 0.769 & -0.09 & 0.131\\
+Marie & French & -0.22 & <0.001 & -0.22 & <0.001\\
+Nathan & French & -0.16 & 0.036 & -0.04 & 0.580\\
+Tim & French & -0.34 & <0.001 & -0.18 & <0.001\\
+\bottomrule
+\end{longtable}
+\efloatseparator
+ 
+\begin{longtable}[t]{ccccccccccc}
+\caption{\label{tab:full-data-summary}Results from maximal logistic regression model (model 3) testing the effects of network growth values, corpus (English as baseline), input frequency, comprehensive AoA, word category and word length to predict word acquisition. All variables were scaled and centred. Word category was defined according to word categories on the McArthur Bates CDI (Fenson et al., 1994)}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{4}{c}{Actual} & \multicolumn{4}{c}{Target} \\
+\cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-9}
+Effect & beta & SE & z & p & Effect & beta & SE & z & p & 95\% CI\\
+\midrule
+Intercept & -3.35 & 0.27 & -12.51 & <0.001 & Intercept & -2.96 & 0.38 & -7.79 & <0.001 & {}[-3.71,-2.22]\\
+INT value & 0.88 & 0.07 & 12.50 & <0.001 & INT z & 0.47 & 0.06 & 8.08 & <0.001 & {}[0.35,0.58]\\
+Age & 0.93 & 0.14 & 6.57 & <0.001 & Age scaled & 1.25 & 0.13 & 9.77 & <0.001 & {}[1,1.5]\\
+EXT value & 0.02 & 0.05 & 0.46 & 0.648 & EXT z & 0.00 & 0.05 & 0.04 & 0.964 & {}[-0.1,0.1]\\
+Length & -0.07 & 0.06 & -1.29 & 0.198 & Length scaled & -0.14 & 0.06 & -2.32 & 0.021 & {}[-0.25,-0.02]\\
+\addlinespace
+Input frequency & 0.17 & 0.05 & 3.31 & 0.001 & Freq scaled & 0.19 & 0.05 & 3.71 & <0.001 & {}[0.09,0.29]\\
+AoA & -0.22 & 0.04 & -6.13 & <0.001 & Aoa scaled & -0.21 & 0.04 & -5.79 & <0.001 & {}[-0.29,-0.14]\\
+Corpus & 0.52 & 0.31 & 1.65 & 0.099 & CorpusEnglish & 0.93 & 0.47 & 1.99 & 0.047 & {}[0.01,1.84]\\
+Categoryverbs & -0.53 & 0.08 & -6.69 & <0.001 & Categoryverbs & -0.61 & 0.08 & -7.59 & <0.001 & {}[-0.77,-0.45]\\
+Category: adjectives & -0.15 & 0.14 & -1.05 & 0.292 & Categorydescriptive words & -0.13 & 0.15 & -0.89 & 0.373 & {}[-0.42,0.16]\\
+\addlinespace
+Category: games/routines & -0.16 & 0.16 & -0.99 & 0.321 & Categorygames routines & -0.14 & 0.16 & -0.83 & 0.405 & {}[-0.46,0.18]\\
+Category: prepositions & -0.06 & 0.42 & -0.13 & 0.896 & Categoryprepositions & -0.17 & 0.46 & -0.37 & 0.710 & {}[-1.08,0.73]\\
+Category: pronouns & -0.29 & 0.40 & -0.73 & 0.467 & Categorypronouns & -0.40 & 0.39 & -1.01 & 0.310 & {}[-1.17,0.37]\\
+Category: quantifiers & 0.87 & 0.68 & 1.28 & 0.200 & Categoryquantifiers & 0.42 & 0.68 & 0.62 & 0.537 & {}[-0.91,1.75]\\
+Category: onomatopoeia & 0.29 & 0.17 & 1.70 & 0.089 & Categorysounds & 0.17 & 0.17 & 1.01 & 0.313 & {}[-0.16,0.5]\\
+\addlinespace
+Category: time & -1.67 & 0.62 & -2.72 & 0.007 & Categorytime words & -1.95 & 0.61 & -3.20 & 0.001 & {}[-3.14,-0.76]\\
+Category: locations & 0.34 & 0.26 & 1.33 & 0.182 & Categorylocations & 0.23 & 0.26 & 0.89 & 0.371 & {}[-0.28,0.74]\\
+Age x INT & 0.12 & 0.05 & 2.27 & 0.023 & INT z \$\textbackslash{}times\$ Age scaled & -0.07 & 0.04 & -1.62 & 0.106 & {}[-0.16,0.01]\\
+Age x EXT & -0.02 & 0.04 & -0.42 & 0.673 & Age scaled \$\textbackslash{}times\$ EXT z & -0.03 & 0.05 & -0.56 & 0.575 & {}[-0.12,0.06]\\
+Age scaled \$\textbackslash{}times\$ Length scaled & 0.04 & 0.05 & 0.76 & 0.449 & Age scaled \$\textbackslash{}times\$ Length scaled & 0.01 & 0.05 & 0.22 & 0.825 & {}[-0.09,0.11]\\
+\addlinespace
+Age x Input frequency & -0.06 & 0.03 & -1.86 & 0.063 & Age scaled \$\textbackslash{}times\$ Freq scaled & -0.06 & 0.03 & -1.92 & 0.055 & {}[-0.13,0]\\
+Age x AoA & 0.11 & 0.03 & 3.92 & <0.001 & Age scaled \$\textbackslash{}times\$ Aoa scaled & 0.10 & 0.03 & 3.28 & 0.001 & {}[0.04,0.16]\\
+\bottomrule
+\end{longtable}

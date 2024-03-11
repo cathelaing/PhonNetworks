@@ -1,5 +1,10 @@
 # load packages
 
+#renv::init()
+#renv::deactivate()
+
+source("gamm_hacks.r")
+
 library(tidyverse)
 library(stringi)
 library(stringr)
@@ -10,7 +15,6 @@ library(papaja)
 library(tidyverse)
 library(dplyr)
 library(feather)
-#library(ggthemes)
 library(nlme)
 library(broom)
 library(kableExtra)
@@ -20,12 +24,10 @@ library(ggraph)
 library(data.table)
 library(linguisticsdown)
 library(ggridges)
-library(mgcv) 
+library(mgcv)
 library(itsadug)
-source("gamm_hacks.r")
 library(broom.mixed)
 library(car)
-#library(sjPlot)
 library(fixest)
 library(broom.mixed)
 

@@ -1,0 +1,84 @@
+\begin{longtable}[t]{cccccc}
+\caption{\label{tab:table-data-overview}Age (months) at first session, number of sessions and number of distinct word types produced by each child in the dataset. Means and SDs for each corpus are shown in bold.}\\
+\toprule
+Speaker & Corpus & Min. age & n Sessions & Types & n Tokens\\
+\midrule
+Anais & French & 12 & 17 & 283 & 7169\\
+Marie & French & 12 & 14 & 258 & 5677\\
+Nathan & French & 12 & 17 & 162 & 4814\\
+Tim & French & 11 & 17 & 460 & 11489\\
+\midrule
+\textbf{Mean} & \textbf{French} & \textbf{12} & \textbf{16} & \textbf{291} & \textbf{7287}\\
+\addlinespace
+\textbf{SD} & \textbf{French} & \textbf{0} & \textbf{2} & \textbf{124} & \textbf{2965}\\
+\midrule
+Alex & English & 16 & 14 & 272 & 5253\\
+Lily & English & 13 & 16 & 456 & 8221\\
+Naima & English & 11 & 19 & 550 & 8107\\
+Violet & English & 14 & 14 & 385 & 6604\\
+\addlinespace
+William & English & 16 & 13 & 270 & 2888\\
+\midrule
+\textbf{Mean} & \textbf{English} & \textbf{14} & \textbf{15} & \textbf{387} & \textbf{6215}\\
+\textbf{SD} & \textbf{English} & \textbf{2} & \textbf{2} & \textbf{121} & \textbf{2222}\\
+\midrule
+\textbf{Mean} & \textbf{All} & \textbf{13} & \textbf{16} & \textbf{344} & \textbf{6691}\\
+\textbf{SD} & \textbf{All} & \textbf{2} & \textbf{2} & \textbf{125} & \textbf{2467}\\
+\bottomrule
+\end{longtable}
+\efloatseparator
+ 
+\begin{longtable}[t]{ccccccc}
+\caption{\label{tab:table-model-outputs}Outputs from nested model comparisons comparing logistic regression models predicting acquisition of words in each month according to INT- and EXT-like growth structures.}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{3}{c}{Actual} & \multicolumn{3}{c}{Target} \\
+\cmidrule(l{3pt}r{3pt}){2-4} \cmidrule(l{3pt}r{3pt}){5-7}
+Model & Df & Chi Sq & p & Df & Chi Sq & p\\
+\midrule
+null vs. INT & 2 & 395.48 & <0.001 & 2 & 84.18 & <0.001\\
+null vs. EXT & 2 & 1.00 & 0.608 & 2 & 2.87 & 0.238\\
+INT vs. INT+EXT & 2 & 0.35 & 0.841 & 2 & 0.33 & 0.848\\
+EXT vs. INT+EXT & 2 & 394.83 & <0.001 & 2 & 81.64 & <0.001\\
+\midrule
+\bottomrule
+\end{longtable}
+\efloatseparator
+ 
+\begin{longtable}[t]{ccccccccccc}
+\caption{\label{tab:table-data-summary}Results from maximal logistic regression model (model 3) testing the effects of network growth values, corpus (English as baseline), input frequency, comprehensive AoA, word category and word length to predict word acquisition. All variables were scaled and centred. Category has been removed for ease of interpretation but this is shown in the full model output in S4.}\\
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{5}{c}{Actual} & \multicolumn{5}{c}{Target} \\
+\cmidrule(l{3pt}r{3pt}){2-6} \cmidrule(l{3pt}r{3pt}){7-11}
+Effect & beta & SE & z & p & 95\% CI & beta & SE & z & p & 95\% CI\\
+\midrule
+Intercept & -3.28 & 0.27 & -12.25 & <0.001 & {}[-3.81,-2.76] & -2.96 & 0.38 & -7.79 & <0.001 & {}[-3.71,-2.22]\\
+INT value & 0.88 & 0.07 & 12.59 & <0.001 & {}[0.74,1.02] & 0.47 & 0.06 & 8.08 & <0.001 & {}[0.35,0.58]\\
+EXT value & 0.01 & 0.05 & 0.27 & 0.787 & {}[-0.09,0.11] & 0.00 & 0.05 & 0.04 & 0.964 & {}[-0.1,0.1]\\
+Age & 0.94 & 0.14 & 6.66 & <0.001 & {}[0.66,1.21] & 1.25 & 0.13 & 9.77 & <0.001 & {}[1,1.5]\\
+AoA & -0.23 & 0.04 & -6.22 & <0.001 & {}[-0.3,-0.15] & -0.21 & 0.04 & -5.79 & <0.001 & {}[-0.29,-0.14]\\
+\addlinespace
+Length & -0.08 & 0.06 & -1.46 & 0.144 & {}[-0.2,0.03] & -0.14 & 0.06 & -2.32 & 0.021 & {}[-0.25,-0.02]\\
+Input frequency & 0.17 & 0.05 & 3.30 & 0.001 & {}[0.07,0.27] & 0.19 & 0.05 & 3.71 & <0.001 & {}[0.09,0.29]\\
+Corpus & 0.43 & 0.31 & 1.37 & 0.172 & {}[-0.18,1.03] & 0.93 & 0.47 & 1.99 & 0.047 & {}[0.01,1.84]\\
+Age x INT & 0.16 & 0.05 & 2.96 & 0.003 & {}[0.05,0.27] & -0.07 & 0.04 & -1.62 & 0.106 & {}[-0.16,0.01]\\
+Age x EXT & -0.03 & 0.04 & -0.58 & 0.561 & {}[-0.11,0.06] & -0.03 & 0.05 & -0.56 & 0.575 & {}[-0.12,0.06]\\
+\addlinespace
+Age x AoA & 0.12 & 0.03 & 3.97 & <0.001 & {}[0.06,0.17] & 0.10 & 0.03 & 3.28 & 0.001 & {}[0.04,0.16]\\
+Age x Length & 0.03 & 0.05 & 0.72 & 0.474 & {}[-0.06,0.13] & 0.01 & 0.05 & 0.22 & 0.825 & {}[-0.09,0.11]\\
+Age x Input frequency & -0.06 & 0.03 & -1.90 & 0.057 & {}[-0.12,0] & -0.06 & 0.03 & -1.92 & 0.055 & {}[-0.13,0]\\
+\bottomrule
+\end{longtable}
+\efloatseparator
+ 
+\begin{longtable}[t]{cccccccc}
+\caption{\label{tab:table-GAMM-outputs}Outputs from nested model comparisons of GAMMs testing the effect of age on INT and EXT values in Actual and Target data (Models 1 and 2), and the effect of Data type on INT values (Model 3). Model comparisons compared full models against those without parametric and smooth terms that included the variable being tested.}\\
+\toprule
+\multicolumn{2}{c}{ } & \multicolumn{3}{c}{Actual} & \multicolumn{3}{c}{Target} \\
+\cmidrule(l{3pt}r{3pt}){3-5} \cmidrule(l{3pt}r{3pt}){6-8}
+  & Model & Df & Chi Sq & p & Df & Chi Sq & p\\
+\midrule
+1 & INT:Age & 14.000 & 17.886 & 0.001 & 14.000 & 33.594 & <.001\\
+2 & EXT:Age & 14.000 & 6.088 & 0.592 & 14.000 & 10.084 & 0.125\\
+3 & INT:Data type & 7.000 & 496.560 & <.001 &  &  & \\
+\bottomrule
+\end{longtable}
