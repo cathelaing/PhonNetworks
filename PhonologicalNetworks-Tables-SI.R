@@ -189,13 +189,12 @@ table.aop.deg.corr.speaker <- globalthresholds_AOP %>%
   dplyr::select(Speaker, Corpus, rho_actual, p_actual, rho_target, p_target)
 
 cor.deg.AOP.fig <- ggplot(globalthresholds_AOP,
-                          aes(x = AOP, y = degree, colour = data_type)) +
+                          aes(x = AOP, y = degree, colour = data_type, fill = data_type)) +
   geom_rect(data = subset(globalthresholds_AOP ,corpus == 'French'), aes(fill = corpus),xmin = -Inf,xmax = Inf,
             ymin = -Inf,ymax = Inf,alpha = 0.08, fill = "gray88") +
   geom_point(shape = 21, size = 1, alpha = 0.5, position = position_jitter(.02)) +
   scale_x_continuous(breaks = seq(from = 10, to = 30, by = 10)) +
-  geom_smooth(method=lm,
-              se=FALSE, size = 2) +
+  geom_smooth(method=lm) +
   ylab("degree (z-score)") +
   theme_bw(base_size = 12) +
   theme(axis.text=element_text(size=12),

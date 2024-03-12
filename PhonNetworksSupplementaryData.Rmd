@@ -112,7 +112,7 @@ col_sky <- phon.dist.table %>% unite(sky,
 
 col_sky<- paste0(col_sky, "/")
 
-sum_sq_diffs <- c("S1C1", "S1C2", "S2C1", "SFC1", "Phonological Distance ($\\sum\\sqrt\\text{total}$)")
+sum_sq_diffs <- c("S1C1", "S1C2", "S2C1", "S2CF", "Phonological Distance ($\\sum\\sqrt\\text{total}$)")
 
 phon.dist.table.full <- phon.dist.table %>%
   mutate(word_pos = sum_sq_diffs) %>% dplyr::select(word_pos, 
@@ -149,7 +149,7 @@ Tables \@ref(tab:table-phon-dist-balloon) and \@ref(tab:table-phon-dist-sky) sho
 
 
 ```{r table-phon-dist-balloon, echo=FALSE, message=FALSE, warning=FALSE}
-cap="Table showing how phonological distance was calculated across the dataset. Here distance is calculated between baby and balloon; note that only consonants were included in the phonological distance measure. Word position relates to each consonant's position in the word; features shows values of the 11 distinctive features that were used to generate distance values between each pair of words; sum squared differences shows the difference in values between baby and balloon. The phonological distance of the word pair is shown on the bottom row. S1 = first syllable, S2 = second syllable; C1 = first consonant, C2 = second consonant, CF = final consonant."
+cap="Table showing how phonological distance was calculated across the dataset. Here distance is calculated between baby and balloon; note that only consonants were included in the phonological distance measure. Word position relates to each consonant's position in the word; features shows values of the 11 distinctive features that were used to generate distance values between each pair of words; sum squared differences shows the squared difference in values between baby and balloon. The phonological distance of the word pair is shown on the bottom row. S1 = first syllable, S2 = second syllable; C1 = first consonant, C2 = second consonant, CF = final consonant."
 
 knitr::kable(phon.dist.table.balloon, "latex", booktabs=T, longtable=T, caption=cap, digits = 2, align="c",
       col.names=c("Word position", 
@@ -168,7 +168,7 @@ knitr::kable(phon.dist.table.balloon, "latex", booktabs=T, longtable=T, caption=
 ```
 
 ```{r table-phon-dist-sky, echo=FALSE, message=FALSE, warning=FALSE}
-cap="Table showing how phonological distance was calculated across the dataset. Here distance is calculated between baby and sky; note that only consonants were included in the phonological distance measure. Word position relates to each consonant's position in the word; features shows values of the 11 distinctive features that were used to generate distance values between each pair of words; sum squared differences shows the difference in values between baby and sky. The phonological distance of the word pair is shown on the bottom row. S1 = first syllable, S2 = second syllable; C1 = first consonant, C2 = second consonant, CF = final consonant."
+cap="Table showing how phonological distance was calculated across the dataset. Here distance is calculated between baby and sky; note that only consonants were included in the phonological distance measure. Word position relates to each consonant's position in the word; features shows values of the 11 distinctive features that were used to generate distance values between each pair of words; sum squared differences shows the squared difference in each of the values between baby and sky. The phonological distance of the word pair is shown on the bottom row. S1 = first syllable, S2 = second syllable; C1 = first consonant, C2 = second consonant, CF = final consonant."
 
 knitr::kable(phon.dist.table.sky, "latex", booktabs=T, longtable=T, caption=cap, digits = 2, align="c",
       col.names=c("Word position", 
@@ -235,24 +235,24 @@ To further explore the extent to which the results are dependent on this thresho
 
 cap = "Summary of key variables in the Actual dataset across seven different connectivity thresholds. At each threshold, the number of words that do not connect to any other word in the network is shown, alongisde Spearman's rho values for AoP~Degree correlation tests and model coefficients (estimates, p values and 95\\% confidence intervals) for GLMER models testing the effect of INT and EXT on word learning. GLMERs were the same as those reported in the main paper, varying only by connectivity threshold."
 
-kable(actual.thresholdstest, "latex", booktabs=T, longtable=T, caption=cap, digits=2, align="c",
+kable(actual.thresholdstest, "latex", booktabs=T, caption=cap, longtable = T, digits=2, align="c",
     col.names=c("Threshold", "Unconnected words", "Spearman's rho", 
                 "Estimate", "p", "95% CI", 
                 "Estimate", "p", "95% CI")) %>%
+  # kable_styling(latex_options="scale_down") %>%
     kable_styling(font_size = 8,
                  full_width = F)%>%
   add_header_above(c(" "=3, "INT"=3, "EXT"=3))
 ```
 
-\newpage
-
 ``` {r table-thresholdtest-target, comment=F, message=F, warning = F, echo = F, results = "asis"}
 cap = "Summary of key variables in the Target dataset across seven different connectivity thresholds. At each threshold, the number of words that do not connect to any other word in the network is shown, alongisde Spearman's rho values for AoP~Degree correlation tests and model coefficients (estimates, p values and 95\\% confidence intervals) for GLMER models testing the effect of INT and EXT on word learning. GLMERs were the same as those reported in the main paper, varying only by connectivity threshold."
 
-kable(target.thresholdstest, "latex", booktabs=T, longtable=T, caption=cap, digits=2, align="c",
+kable(target.thresholdstest, "latex", booktabs=T, caption=cap, longtable = T, digits=2, align="c",
     col.names=c("Threshold", "Unconnected words", "Spearman's rho", 
                 "Estimate", "p", "95% CI", 
                 "Estimate", "p", "95% CI")) %>%
+  #kable_styling(latex_options="scale_down") %>%
     kable_styling(font_size = 8,
                  full_width = F)%>%
   add_header_above(c(" "=3, "INT"=3, "EXT"=3))
@@ -277,10 +277,9 @@ Table \@ref(tab:table-aop-deg-corr) and Figure \@ref(fig:Figure-AOP-deg-corr) sh
 
 ```{r Figure-AOP-deg-corr, echo=FALSE, fig.pos='H', message=FALSE, warning=FALSE, fig.cap=cap, fig.height = 7}
 
-cap <- sprintf("Age of production in relation to degree (z-score) of each word in the data. Individual points show individual word types produced in each month, with regression lines showing correlations for each infant. Data type (Actual vs. Target) is indexed by colour; shaded boxes show French data, un-shaded show English data.")
+cap <- sprintf("Age of production in relation to degree (z-score) of each word in the data. Individual points show individual word types produced in each month, with regression lines showing correlations for each infant. Data type (Actual vs. Target) is indexed by colour, with shaded colours showing 95%% confidence intervals; shaded boxes show French data, un-shaded show English data.")
 
 plot(cor.deg.AOP.fig)
-
 
 ```
 

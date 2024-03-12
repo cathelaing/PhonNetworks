@@ -226,7 +226,7 @@ Tables \ref{tab:table-phon-dist-balloon} and \ref{tab:table-phon-dist-sky} shows
 \begingroup\fontsize{9}{11}\selectfont
 
 \begin{longtable}[t]{>{\centering\arraybackslash}p{3cm}>{\centering\arraybackslash}p{1cm}>{\centering\arraybackslash}p{3cm}>{\centering\arraybackslash}p{1cm}>{\centering\arraybackslash}p{3cm}>{\centering\arraybackslash}p{3cm}}
-\caption{\label{tab:table-phon-dist-balloon}Table showing how phonological distance was calculated across the dataset. Here distance is calculated between baby and balloon; note that only consonants were included in the phonological distance measure. Word position relates to each consonant's position in the word; features shows values of the 11 distinctive features that were used to generate distance values between each pair of words; sum squared differences shows the difference in values between baby and balloon. The phonological distance of the word pair is shown on the bottom row. S1 = first syllable, S2 = second syllable; C1 = first consonant, C2 = second consonant, CF = final consonant.}\\
+\caption{\label{tab:table-phon-dist-balloon}Table showing how phonological distance was calculated across the dataset. Here distance is calculated between baby and balloon; note that only consonants were included in the phonological distance measure. Word position relates to each consonant's position in the word; features shows values of the 11 distinctive features that were used to generate distance values between each pair of words; sum squared differences shows the squared difference in values between baby and balloon. The phonological distance of the word pair is shown on the bottom row. S1 = first syllable, S2 = second syllable; C1 = first consonant, C2 = second consonant, CF = final consonant.}\\
 \toprule
 \multicolumn{1}{c}{ } & \multicolumn{2}{c}{Baby} & \multicolumn{2}{c}{Balloon} & \multicolumn{1}{c}{ } \\
 \cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5}
@@ -235,7 +235,7 @@ Word position & Cons. & Features & Cons. & Features & Sum sq. diffs\\
 S1C1 & b & -1,1,0,-1,1,1,0,-1,1,0,0 & b & -1,1,0,-1,1,1,0,-1,1,0,0 & 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0 + 0\\
 S1C2 & - & 0 & - & 0 & -\\
 S2C1 & b & -1,1,0,-1,1,1,0,-1,1,0,0 & l & 0.5,0,1,0,-1,-1,1,-1,-1,1,0 & 2.25 + 1 + 1 + 1 + 4 + 4 + 1 + 0 + 4 + 1 + 0\\
-SFC1 & - & 0 & n & 0,0,1,1,1,-1,1,-1,-1,1,0 & 0 + 0 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 0\\
+S2CF & - & 0 & n & 0,0,1,1,1,-1,1,-1,-1,1,0 & 0 + 0 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 0\\
 Phonological Distance ($\sum\sqrt\text{total}$) &  &  &  &  & 7.21590931844225\\
 \bottomrule
 \end{longtable}
@@ -244,7 +244,7 @@ Phonological Distance ($\sum\sqrt\text{total}$) &  &  &  &  & 7.21590931844225\\
 \begingroup\fontsize{9}{11}\selectfont
 
 \begin{longtable}[t]{>{\centering\arraybackslash}p{3cm}>{\centering\arraybackslash}p{1cm}>{\centering\arraybackslash}p{3cm}>{\centering\arraybackslash}p{1cm}>{\centering\arraybackslash}p{3cm}>{\centering\arraybackslash}p{3cm}}
-\caption{\label{tab:table-phon-dist-sky}Table showing how phonological distance was calculated across the dataset. Here distance is calculated between baby and sky; note that only consonants were included in the phonological distance measure. Word position relates to each consonant's position in the word; features shows values of the 11 distinctive features that were used to generate distance values between each pair of words; sum squared differences shows the difference in values between baby and sky. The phonological distance of the word pair is shown on the bottom row. S1 = first syllable, S2 = second syllable; C1 = first consonant, C2 = second consonant, CF = final consonant.}\\
+\caption{\label{tab:table-phon-dist-sky}Table showing how phonological distance was calculated across the dataset. Here distance is calculated between baby and sky; note that only consonants were included in the phonological distance measure. Word position relates to each consonant's position in the word; features shows values of the 11 distinctive features that were used to generate distance values between each pair of words; sum squared differences shows the squared difference in each of the values between baby and sky. The phonological distance of the word pair is shown on the bottom row. S1 = first syllable, S2 = second syllable; C1 = first consonant, C2 = second consonant, CF = final consonant.}\\
 \toprule
 \multicolumn{1}{c}{ } & \multicolumn{2}{c}{Baby} & \multicolumn{2}{c}{Sky} & \multicolumn{1}{c}{ } \\
 \cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5}
@@ -253,7 +253,7 @@ Word position & Cons. & Features & Cons. & Features & Sum sq. diffs\\
 S1C1 & b & -1,1,0,-1,1,1,0,-1,1,0,0 & s & -0.5,1,-1,-1,0,-1,1,-1,-1,1,0 & 0.25 + 0 + 1 + 0 + 1 + 4 + 1 + 0 + 4 + 1 + 0\\
 S1C2 & - & 0 & k & -1,1,-1,-1,1,-1,-1,-1,-1,-1,0 & 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 0\\
 S2C1 & b & -1,1,0,-1,1,1,0,-1,1,0,0 & - & 0 & 1 + 1 + 0 + 1 + 1 + 1 + 0 + 1 + 1 + 0 + 0\\
-SFC1 & - & 0 & - & 0 & -\\
+S2CF & - & 0 & - & 0 & -\\
 Phonological Distance ($\sum\sqrt\text{total}$) &  &  &  &  & 9.30802897123297\\
 \bottomrule
 \end{longtable}
@@ -316,8 +316,6 @@ Threshold & Unconnected words & Spearman's rho & Estimate & p & 95\% CI & Estima
 \end{longtable}
 \endgroup{}
 
-\newpage
-
 \begingroup\fontsize{8}{10}\selectfont
 
 \begin{longtable}[t]{ccccccccc}
@@ -369,7 +367,7 @@ Table \ref{tab:table-aop-deg-corr} and Figure \ref{fig:Figure-AOP-deg-corr} show
 \begin{figure}
 \centering
 \includegraphics{PhonNetworksSupplementaryData_files/figure-latex/Figure-AOP-deg-corr-1.pdf}
-\caption{\label{fig:Figure-AOP-deg-corr}Age of production in relation to degree (z-score) of each word in the data. Individual points show individual word types produced in each month, with regression lines showing correlations for each infant. Data type (Actual vs.~Target) is indexed by colour; shaded boxes show French data, un-shaded show English data.}
+\caption{\label{fig:Figure-AOP-deg-corr}Age of production in relation to degree (z-score) of each word in the data. Individual points show individual word types produced in each month, with regression lines showing correlations for each infant. Data type (Actual vs.~Target) is indexed by colour, with shaded colours showing 95\% confidence intervals; shaded boxes show French data, un-shaded show English data.}
 \end{figure}
 
 \newpage
