@@ -7,7 +7,7 @@ author:
   address: Department of Language and Linguistic Science, University of York, Heslington, YO10 5DD
   email: catherine.laing@york.ac.uk
 authornote: |
- All code and associated data for this manuscript can be found on the project’s OSF page at https://osf.io/uzrsy/?view_only=340858d2084245d087fc00fcca41b679.  This study was not pre-registered.
+ All code and associated data for this manuscript can be found on the project’s OSF page at https://osf.io/uzrsy/.  This study was not pre-registered.
 shorttitle: Systematicity in early phonological development
 output:
   papaja::apa6_pdf: default
@@ -212,7 +212,7 @@ Network growth models will be used to address the first two hypotheses. Network 
 ### GAMMs
 It is also a possibility that any age-related changes will be non-linear. To address this, Generalized Additive Mixed Models (GAMMs) will be used to test H2, following Wieling [-@wieling_analyzing_2018] and Sóskuthy [-@soskuthy_generalised_2017]. GAMMs allow analysis of dynamically varying data (i.e. change over time), without assuming change to be linear. Since there is no clear expectation as to whether any age-related changes would be linear or not, testing H2 using both logistic regression and GAMMs will account for both possibilities. Non-linearity in the data is analysed in the model through the inclusion of *smooth terms* and *random smooths*, which capture the non-linearity of fixed and random effects, respectively, alongside parametric terms. The dependent variable in these models will be INT and EXT values (tested as predictors in the network growth models outlined above); if predictions set out in H2 are borne out in the data, then we would expect to see a significant effect for age on INT/EXT values as a smooth in the model. H3 will also be tested using GAMMs, given that any differences between Actual and Target data may change over time. Here, we would expect to see a significant effect for Data type as a parametric term. These effects will be identified through nested model comparison and inspection of smooth plots. Full model details are provided below.
 
-All code for data preparation and analysis can be found on the project’s OSF page at https://osf.io/uzrsy/?view_only=340858d2084245d087fc00fcca41b679. This study was not pre-registered.
+All code for data preparation and analysis can be found on the project’s OSF page at https://osf.io/uzrsy/ [@laing_phonological_2024]. This study was not pre-registered.
 
 ## Results
 
