@@ -7,7 +7,7 @@ author:
   address: Department of Language and Linguistic Science, University of York, Heslington, YO10 5DD
   email: catherine.laing@york.ac.uk
 authornote: |
- All code and associated data for this manuscript can be found on the project’s OSF page at https://osf.io/uzrsy/.  This study was not pre-registered.
+ All code and associated data for this manuscript can be found on the project’s OSF page at https://osf.io/uzrsy/.  This study was not pre-registered. © 2024, American Psychological Association. This paper is not the copy of record and may not exactly replicate the final, authoritative version of the article. Please do not copy or cite without authors' permission. The final article will be available, upon publication, via its DOI: 10.1037/xlm0001368
 shorttitle: Systematicity in early phonological development
 output:
   papaja::apa6_pdf: default
